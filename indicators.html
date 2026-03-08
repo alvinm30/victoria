@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Indicators — Victoria Quant Lab</title>
+  <meta name="description" content="Custom trading indicators for TradingView, built from quantitative research." />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div id="particles-js"></div>
+  <div class="grid-overlay"></div>
+  <div class="scanline"></div>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-logo">
+      <span class="logo-bracket">[</span>Victoria<span class="logo-bracket">]</span> QUANT LAB
+    </a>
+    <div class="nav-toggle">
+      <span></span><span></span><span></span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="research.html">Research</a></li>
+      <li><a href="indicators.html">Indicators</a></li>
+      <li><a href="marketplace.html">Marketplace</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main class="main-content">
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+      <div class="hero-tag">// INDICATOR REGISTRY</div>
+      <h1 class="section-title">Trading Indicators</h1>
+      <div class="section-line"></div>
+      <p class="section-desc">
+        Proprietary indicators developed from quantitative research.
+        Published on TradingView.
+      </p>
+    </section>
+
+    <!-- Indicator Cards -->
+    <section class="section">
+      <div class="container">
+        <div class="card-grid">
+
+          <!-- Indicator 1 -->
+          <div class="card">
+            <span class="card-tag indicator">INDICATOR</span>
+            <h3 class="card-title">Victoria Volatility Bands</h3>
+            <p class="card-meta">PLATFORM: TradingView &nbsp;|&nbsp; VERSION: 2.1</p>
+            <p class="card-desc">
+              Dynamic volatility bands based on ATR-adjusted standard deviations.
+              Adapts to market regime changes and highlights overbought/oversold zones
+              with real-time color transitions.
+            </p>
+            <p class="card-meta">USE CASE: Identify trend exhaustion and reversal zones in volatile markets.</p>
+            <div class="card-footer">
+              <a href="#" class="btn btn-primary">View on TradingView</a>
+            </div>
+          </div>
+
+          <!-- Indicator 2 -->
+          <div class="card">
+            <span class="card-tag indicator">INDICATOR</span>
+            <h3 class="card-title">Victoria Momentum Scanner</h3>
+            <p class="card-meta">PLATFORM: TradingView &nbsp;|&nbsp; VERSION: 1.4</p>
+            <p class="card-desc">
+              Multi-timeframe momentum scanner using rate-of-change calculations
+              weighted by volume profile. Scans multiple pairs simultaneously
+              and ranks by momentum strength.
+            </p>
+            <p class="card-meta">USE CASE: Screen for high-momentum setups across multiple instruments.</p>
+            <div class="card-footer">
+              <a href="#" class="btn btn-primary">View on TradingView</a>
+            </div>
+          </div>
+
+          <!-- Indicator 3 -->
+          <div class="card">
+            <span class="card-tag indicator">INDICATOR</span>
+            <h3 class="card-title">Victoria Order Flow Heatmap</h3>
+            <p class="card-meta">PLATFORM: TradingView &nbsp;|&nbsp; VERSION: 1.0</p>
+            <p class="card-desc">
+              Visualizes order flow intensity using tick data aggregation.
+              Displays buying and selling pressure as a heatmap overlay directly
+              on the price chart for intuitive flow reading.
+            </p>
+            <p class="card-meta">USE CASE: Read institutional order flow patterns for scalping entries.</p>
+            <div class="card-footer">
+              <a href="#" class="btn btn-primary">View on TradingView</a>
+            </div>
+          </div>
+
+          <!-- Indicator 4 -->
+          <div class="card">
+            <span class="card-tag indicator">INDICATOR</span>
+            <h3 class="card-title">Victoria Z-Score Oscillator</h3>
+            <p class="card-meta">PLATFORM: TradingView &nbsp;|&nbsp; VERSION: 3.0</p>
+            <p class="card-desc">
+              Statistical Z-score indicator measuring price deviation from
+              a rolling mean. Configurable lookback period and standard deviation
+              thresholds with multi-timeframe confirmation signals.
+            </p>
+            <p class="card-meta">USE CASE: Mean reversion trading with statistical confidence levels.</p>
+            <div class="card-footer">
+              <a href="#" class="btn btn-primary">View on TradingView</a>
+            </div>
+          </div>
+
+          <!-- Indicator 5 -->
+          <div class="card">
+            <span class="card-tag indicator">INDICATOR</span>
+            <h3 class="card-title">Victoria Session Mapper</h3>
+            <p class="card-meta">PLATFORM: TradingView &nbsp;|&nbsp; VERSION: 1.2</p>
+            <p class="card-desc">
+              Maps trading sessions (London, New York, Tokyo, Sydney) with
+              volume-weighted range analysis. Highlights session opens, highs, lows,
+              and key statistical levels for intraday traders.
+            </p>
+            <p class="card-meta">USE CASE: Intraday session-based trading with volume context.</p>
+            <div class="card-footer">
+              <a href="#" class="btn btn-primary">View on TradingView</a>
+            </div>
+          </div>
+
+          <!-- Indicator 6 -->
+          <div class="card">
+            <span class="card-tag indicator">INDICATOR</span>
+            <h3 class="card-title">Victoria Correlation Matrix</h3>
+            <p class="card-meta">PLATFORM: TradingView &nbsp;|&nbsp; VERSION: 1.1</p>
+            <p class="card-desc">
+              Real-time correlation matrix displaying rolling correlations between
+              configurable instrument pairs. Useful for pairs trading, hedging,
+              and portfolio diversification analysis.
+            </p>
+            <p class="card-meta">USE CASE: Monitor cross-asset correlations for portfolio hedging.</p>
+            <div class="card-footer">
+              <a href="#" class="btn btn-primary">View on TradingView</a>
+            </div>
+          </div>
+
+        </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-logo">[Victoria] QUANT LAB</div>
+      <p class="footer-text">Quantitative Research &bull; Algorithmic Trading &bull; Systematic Strategies</p>
+      <div class="footer-links">
+        <a href="about.html">About</a>
+        <a href="research.html">Research</a>
+        <a href="indicators.html">Indicators</a>
+        <a href="marketplace.html">Marketplace</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>

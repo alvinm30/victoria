@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marketplace — Victoria Quant Lab</title>
+  <meta name="description" content="Marketplace for trading indicators — coming soon." />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div id="particles-js"></div>
+  <div class="grid-overlay"></div>
+  <div class="scanline"></div>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-logo">
+      <span class="logo-bracket">[</span>Victoria<span class="logo-bracket">]</span> QUANT LAB
+    </a>
+    <div class="nav-toggle">
+      <span></span><span></span><span></span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="research.html">Research</a></li>
+      <li><a href="indicators.html">Indicators</a></li>
+      <li><a href="marketplace.html">Marketplace</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main class="main-content">
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+      <div class="hero-tag">// MARKETPLACE MODULE</div>
+      <h1 class="section-title">Marketplace</h1>
+      <div class="section-line"></div>
+      <p class="section-desc">
+        Premium trading indicators built from
+        quantitative research. Marketplace launching soon.
+      </p>
+    </section>
+
+    <!-- Status Banner -->
+    <section class="section" style="padding-top: 0;">
+      <div class="container" style="max-width: 700px;">
+        <div class="terminal-panel">
+          <div class="terminal-header">
+            <span class="terminal-dot red"></span>
+            <span class="terminal-dot yellow"></span>
+            <span class="terminal-dot green"></span>
+            <span class="terminal-title">marketplace-status</span>
+          </div>
+          <div class="terminal-body">
+            <div class="terminal-line">
+              <span class="terminal-prompt">&gt; </span>
+              <span class="terminal-command">marketplace.getStatus()</span>
+            </div>
+            <div class="terminal-line">
+              <span class="terminal-output">[INFO] Marketplace module is in </span>
+              <span class="terminal-highlight">PREVIEW MODE</span>
+            </div>
+            <div class="terminal-line">
+              <span class="terminal-output">[INFO] Payment integration: </span>
+              <span class="terminal-highlight">PENDING</span>
+            </div>
+            <div class="terminal-line">
+              <span class="terminal-output">[INFO] Product catalog loaded: </span>
+              <span style="color: #28ca42;">3 items</span>
+            </div>
+            <div class="terminal-line">
+              <span class="terminal-prompt">&gt; </span>
+              <span class="cursor-blink"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Product Cards -->
+    <section class="section">
+      <div class="container">
+
+        <!-- Indicators Section -->
+        <div class="section-header">
+          <div class="section-tag">// INDICATORS</div>
+          <h2 class="section-title">Trading Indicators</h2>
+          <div class="section-line"></div>
+        </div>
+
+        <div class="card-grid" style="margin-bottom: 5rem;">
+
+          <div class="card">
+            <span class="card-tag indicator">INDICATOR</span>
+            <h3 class="card-title">Victoria Volatility Bands Pro</h3>
+            <p class="card-desc">
+              Advanced volatility bands with ATR-adjusted deviation levels,
+              regime detection, and multi-timeframe analysis built in.
+            </p>
+            <div class="card-price">$49.00</div>
+            <p class="card-meta">PLATFORM: TradingView</p>
+            <div class="card-footer">
+              <span class="btn btn-disabled">Buy — Coming Soon</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <span class="card-tag indicator">INDICATOR</span>
+            <h3 class="card-title">Victoria Momentum Scanner Pro</h3>
+            <p class="card-desc">
+              Professional momentum scanner with volume weighting,
+              multi-pair screening, and customizable alert system.
+            </p>
+            <div class="card-price">$39.00</div>
+            <p class="card-meta">PLATFORM: TradingView</p>
+            <div class="card-footer">
+              <span class="btn btn-disabled">Buy — Coming Soon</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <span class="card-tag indicator">INDICATOR</span>
+            <h3 class="card-title">Victoria Z-Score Suite</h3>
+            <p class="card-desc">
+              Complete Z-score analysis toolkit with oscillator, dashboard panel,
+              and multi-timeframe confluence signals.
+            </p>
+            <div class="card-price">$59.00</div>
+            <p class="card-meta">PLATFORM: TradingView</p>
+            <div class="card-footer">
+              <span class="btn btn-disabled">Buy — Coming Soon</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-logo">[Victoria] QUANT LAB</div>
+      <p class="footer-text">Quantitative Research &bull; Algorithmic Trading &bull; Systematic Strategies</p>
+      <div class="footer-links">
+        <a href="about.html">About</a>
+        <a href="research.html">Research</a>
+        <a href="indicators.html">Indicators</a>
+        <a href="marketplace.html">Marketplace</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>
