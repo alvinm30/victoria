@@ -783,21 +783,34 @@
     }
 
     function loadData() {
-      fetch('data/btc5m.csv', { cache: 'no-store' })
-        .then(function (res) {
-          if (!res.ok) throw new Error('Failed to load CSV');
-          return res.text();
-        })
-        .then(function (text) {
-          if (parseCsvText(text) && liveStatus) {
-            liveStatus.textContent = 'Ready · ' + rawData.length + ' candles loaded';
-          }
-        })
-        .catch(function () {
+      var sources = [
+        'data/btc5m.csv',
+        'https://raw.githubusercontent.com/alvinm30/victoria/main/victoria-quant-lab/data/btc5m.csv'
+      ];
+
+      function trySource(idx) {
+        if (idx >= sources.length) {
           if (liveStatus) {
-            liveStatus.textContent = 'Could not load data/btc5m.csv. Please run with a local server.';
+            liveStatus.textContent = 'Could not load dataset. Please check file path or network.';
           }
-        });
+          return;
+        }
+        fetch(sources[idx], { cache: 'no-store' })
+          .then(function (res) {
+            if (!res.ok) throw new Error('Failed to load CSV');
+            return res.text();
+          })
+          .then(function (text) {
+            if (parseCsvText(text) && liveStatus) {
+              liveStatus.textContent = 'Ready · ' + rawData.length + ' candles loaded';
+            }
+          })
+          .catch(function () {
+            trySource(idx + 1);
+          });
+      }
+
+      trySource(0);
     }
 
     if (speedEl && speedLabel) {
@@ -902,28 +915,44 @@
       ctx.fillText('Interactive demo preview', pad.l, h - 8);
     }
 
-    fetch('data/btc5m.csv', { cache: 'no-store' })
-      .then(function (res) { return res.text(); })
-      .then(function (txt) {
-        var lines = txt.trim().split(/\r?\n/);
-        var out = [];
-        for (var i = 1; i < lines.length; i++) {
-          var p = lines[i].split(',');
-          if (p.length < 6) continue;
-          out.push({
-            open: Number(p[1]),
-            high: Number(p[2]),
-            low: Number(p[3]),
-            close: Number(p[4])
-          });
-        }
-        drawPreview(out);
-      })
-      .catch(function () {
+    var previewSources = [
+      'data/btc5m.csv',
+      'https://raw.githubusercontent.com/alvinm30/victoria/main/victoria-quant-lab/data/btc5m.csv'
+    ];
+
+    function loadPreview(idx) {
+      if (idx >= previewSources.length) {
         ctx.fillStyle = 'rgba(255,255,255,0.6)';
         ctx.font = '12px monospace';
         ctx.fillText('Preview unavailable', 20, 40);
-      });
+        return;
+      }
+      fetch(previewSources[idx], { cache: 'no-store' })
+        .then(function (res) {
+          if (!res.ok) throw new Error('bad');
+          return res.text();
+        })
+        .then(function (txt) {
+          var lines = txt.trim().split(/\r?\n/);
+          var out = [];
+          for (var i = 1; i < lines.length; i++) {
+            var p = lines[i].split(',');
+            if (p.length < 6) continue;
+            out.push({
+              open: Number(p[1]),
+              high: Number(p[2]),
+              low: Number(p[3]),
+              close: Number(p[4])
+            });
+          }
+          drawPreview(out);
+        })
+        .catch(function () {
+          loadPreview(idx + 1);
+        });
+    }
+
+    loadPreview(0);
   }());
 
   // ============================================
