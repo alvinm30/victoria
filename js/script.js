@@ -1342,7 +1342,7 @@
   }
 
   wireMailboxForm('contact-form', {
-    toEmail: 'alvin_prestige_co@gmail.com',
+    toEmail: 'alvin.prestige.co@gmail.com',
     subjectPrefix: 'Contact Message — Victoria Quant Lab',
     pageTag: 'contact',
     nameSelector: '#name',
@@ -1352,7 +1352,7 @@
   });
 
   wireMailboxForm('smc-mailbox-form', {
-    toEmail: 'alvin_prestige_co@gmail.com',
+    toEmail: 'alvin.prestige.co@gmail.com',
     subjectPrefix: 'SMC Mailbox Message — Victoria Quant Lab',
     pageTag: 'indicator-smc',
     nameSelector: '#c-name',
