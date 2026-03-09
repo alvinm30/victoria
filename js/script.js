@@ -785,7 +785,7 @@
     function loadData() {
       var sources = [
         'data/btc5m.csv',
-        'https://raw.githubusercontent.com/alvinm30/victoria/main/victoria-quant-lab/data/btc5m.csv'
+        'https://raw.githubusercontent.com/alvinm30/victoria/main/data/btc5m.csv'
       ];
 
       function trySource(idx) {
@@ -917,7 +917,7 @@
 
     var previewSources = [
       'data/btc5m.csv',
-      'https://raw.githubusercontent.com/alvinm30/victoria/main/victoria-quant-lab/data/btc5m.csv'
+      'https://raw.githubusercontent.com/alvinm30/victoria/main/data/btc5m.csv'
     ];
 
     function loadPreview(idx) {
