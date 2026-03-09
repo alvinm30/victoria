@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tools — Victoria Quant Lab</title>
+  <meta name="description" content="Trading indicators, automated strategies, and algo tools built for TradingView, MT4/MT5, and HyperLiquid." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+  <div id="particles-js"></div>
+  <div class="grid-overlay"></div>
+  <div class="scanline"></div>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-logo">
+      <span class="logo-bracket">[</span>Victoria<span class="logo-bracket">]</span> QUANT LAB
+    </a>
+    <div class="nav-toggle">
+      <span></span><span></span><span></span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="research.html">Research</a></li>
+      <li><a href="tools.html" class="active">Tools</a></li>
+      <li><a href="marketplace.html">Marketplace</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main class="main-content">
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+      <div class="hero-tag">// TOOL REGISTRY v2.0</div>
+      <h1 class="section-title">Trading Tools</h1>
+      <div class="section-line"></div>
+      <p class="section-desc">
+        A curated suite of production-ready trading tools — custom indicators,
+        automated strategies, and algorithmic systems built for real markets.
+      </p>
+    </section>
+
+    <!-- ── CATEGORY TAB BAR ──────────────────────── -->
+    <div class="pg-tab-bar" id="toolsTabBar">
+      <div class="pg-tab-inner">
+        <button class="pg-tab active" data-tab="all">
+          <i class="fa-solid fa-border-all"></i> All
+          <span class="pg-tab-count" id="count-all">7</span>
+        </button>
+        <button class="pg-tab" data-tab="indicators">
+          <i class="fa-solid fa-wave-square"></i> Indicators
+          <span class="pg-tab-count" id="count-indicators">1</span>
+        </button>
+        <button class="pg-tab" data-tab="strategies">
+          <i class="fa-solid fa-chart-line"></i> Strategies
+          <span class="pg-tab-count" id="count-strategies">4</span>
+        </button>
+        <button class="pg-tab" data-tab="auto">
+          <i class="fa-solid fa-microchip"></i> Auto Systems
+          <span class="pg-tab-count" id="count-auto">2</span>
+        </button>
+        <div class="pg-tab-search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="toolSearch" placeholder="Search tools..." autocomplete="off" />
+        </div>
+      </div>
+    </div>
+
+    <!-- ── STATUS STRIP ──────────────────────────── -->
+    <div class="pg-status-strip">
+      <div class="container">
+        <span class="pg-status-item"><span class="pg-status-dot live"></span> 1 Live</span>
+        <span class="pg-status-item"><span class="pg-status-dot active"></span> 2 Active</span>
+        <span class="pg-status-item"><span class="pg-status-dot dev"></span> 4 In Development</span>
+        <span class="pg-status-sep">|</span>
+        <span class="pg-status-item" id="toolsShowing">Showing 7 tools</span>
+      </div>
+    </div>
+
+    <!-- ── TOOL GRID ──────────────────────────────── -->
+    <section class="section tools-grid-section">
+      <div class="container">
+        <div class="pg-card-grid" id="toolsGrid">
+
+          <!-- ─ INDICATORS ─ -->
+          <div class="pg-card" data-category="indicators" data-title="Victoria SMC Concept Indicator" data-status="live">
+            <div class="pg-card-header">
+              <span class="pg-card-icon"><i class="fa-solid fa-wave-square"></i></span>
+              <div class="pg-card-labels">
+                <span class="pg-tag pg-tag--indicator">INDICATOR</span>
+                <span class="pg-tag pg-tag--live">LIVE</span>
+              </div>
+            </div>
+            <h3 class="pg-card-title">Victoria SMC Concept Indicator</h3>
+            <p class="pg-card-meta">TradingView &nbsp;·&nbsp; Pine Script &nbsp;·&nbsp; v1.0</p>
+            <p class="pg-card-desc">
+              All-in-one Smart Money Concepts tool — BOS, CHoCH, Order Blocks,
+              Fair Value Gaps, and liquidity levels plotted in real-time on TradingView.
+            </p>
+            <div class="pg-card-footer">
+              <a href="indicator-smc.html" class="btn btn-primary">Details</a>
+              <a href="#" class="btn btn-secondary">TradingView</a>
+            </div>
+          </div>
+
+          <!-- ─ STRATEGIES ─ -->
+          <div class="pg-card" data-category="strategies" data-title="SMC Structure Strategy" data-status="active">
+            <div class="pg-card-header">
+              <span class="pg-card-icon"><i class="fa-solid fa-chart-line"></i></span>
+              <div class="pg-card-labels">
+                <span class="pg-tag pg-tag--strategy">STRATEGY</span>
+                <span class="pg-tag pg-tag--active">ACTIVE</span>
+              </div>
+            </div>
+            <h3 class="pg-card-title">SMC Structure Strategy</h3>
+            <p class="pg-card-meta">TradingView / MT5 &nbsp;·&nbsp; Pine Script / MQL5</p>
+            <p class="pg-card-desc">
+              Rule-based strategy combining BOS detection with Order Block entries and
+              FVG confirmation. Session-filtered with defined R:R risk management.
+            </p>
+            <div class="pg-card-footer">
+              <a href="contact.html" class="btn btn-secondary">Enquire</a>
+            </div>
+          </div>
+
+          <div class="pg-card" data-category="strategies" data-title="Statistical Arbitrage Engine" data-status="dev">
+            <div class="pg-card-header">
+              <span class="pg-card-icon"><i class="fa-solid fa-arrows-left-right"></i></span>
+              <div class="pg-card-labels">
+                <span class="pg-tag pg-tag--strategy">STRATEGY</span>
+                <span class="pg-tag pg-tag--dev">IN DEV</span>
+              </div>
+            </div>
+            <h3 class="pg-card-title">Statistical Arbitrage Engine</h3>
+            <p class="pg-card-meta">Python &nbsp;·&nbsp; Crypto Perps / FX / Equities</p>
+            <p class="pg-card-desc">
+              Pairs and spread trading using cointegration analysis, z-score mean-reversion
+              signals, and dynamic hedge ratios with automated execution.
+            </p>
+            <div class="pg-card-footer">
+              <a href="contact.html" class="btn btn-secondary">Notify Me</a>
+            </div>
+          </div>
+
+          <div class="pg-card" data-category="strategies" data-title="CTA Trend-Following Model" data-status="dev">
+            <div class="pg-card-header">
+              <span class="pg-card-icon"><i class="fa-solid fa-arrow-trend-up"></i></span>
+              <div class="pg-card-labels">
+                <span class="pg-tag pg-tag--strategy">STRATEGY</span>
+                <span class="pg-tag pg-tag--dev">IN DEV</span>
+              </div>
+            </div>
+            <h3 class="pg-card-title">CTA Trend-Following Model</h3>
+            <p class="pg-card-meta">Python / MT5 &nbsp;·&nbsp; Forex / Commodities / Crypto</p>
+            <p class="pg-card-desc">
+              Systematic multi-asset CTA capturing momentum across timeframes.
+              ATR-based sizing, rolling breakout signals, and portfolio-level
+              correlation risk controls.
+            </p>
+            <div class="pg-card-footer">
+              <a href="contact.html" class="btn btn-secondary">Notify Me</a>
+            </div>
+          </div>
+
+          <div class="pg-card" data-category="strategies" data-title="Interactive Demo Backtester" data-status="active">
+            <div class="pg-card-header">
+              <span class="pg-card-icon"><i class="fa-solid fa-play"></i></span>
+              <div class="pg-card-labels">
+                <span class="pg-tag pg-tag--strategy">STRATEGY</span>
+                <span class="pg-tag pg-tag--active">ACTIVE</span>
+              </div>
+            </div>
+            <h3 class="pg-card-title">Interactive Demo Backtester</h3>
+            <p class="pg-card-meta">Web Demo &nbsp;·&nbsp; EMA / SMA / VWMA &nbsp;·&nbsp; Session Filter</p>
+            <p class="pg-card-desc">
+              Public interactive demo to test MA crossover logic on historical candles.
+              Includes live playback, buy/sell markers, open-entry line, and report metrics.
+            </p>
+            <div class="pg-card-footer">
+              <a href="interactive-demo.html" class="btn btn-primary">Open Interactive Demo</a>
+            </div>
+          </div>
+
+          <!-- ─ AUTO SYSTEMS ─ -->
+          <div class="pg-card" data-category="auto" data-title="SMC Expert Advisor" data-status="dev">
+            <div class="pg-card-header">
+              <span class="pg-card-icon"><i class="fa-solid fa-microchip"></i></span>
+              <div class="pg-card-labels">
+                <span class="pg-tag pg-tag--auto">AUTO SYSTEM</span>
+                <span class="pg-tag pg-tag--dev">IN DEV</span>
+              </div>
+            </div>
+            <h3 class="pg-card-title">SMC Expert Advisor (EA)</h3>
+            <p class="pg-card-meta">MT4 / MT5 &nbsp;·&nbsp; MQL4 / MQL5 &nbsp;·&nbsp; Forex / CFDs</p>
+            <p class="pg-card-desc">
+              Fully automated EA executing the SMC Structure Strategy on MT4/MT5.
+              Built-in risk management, session filters, and dynamic lot sizing.
+            </p>
+            <div class="pg-card-footer">
+              <a href="contact.html" class="btn btn-secondary">Notify Me</a>
+            </div>
+          </div>
+
+          <div class="pg-card" data-category="auto" data-title="HyperLiquid Algo Bot" data-status="dev">
+            <div class="pg-card-header">
+              <span class="pg-card-icon"><i class="fa-solid fa-bolt"></i></span>
+              <div class="pg-card-labels">
+                <span class="pg-tag pg-tag--auto">AUTO SYSTEM</span>
+                <span class="pg-tag pg-tag--dev">IN DEV</span>
+              </div>
+            </div>
+            <h3 class="pg-card-title">HyperLiquid Algo Bot</h3>
+            <p class="pg-card-meta">HyperLiquid API &nbsp;·&nbsp; Python &nbsp;·&nbsp; Crypto Perps</p>
+            <p class="pg-card-desc">
+              Python-based algo bot for HyperLiquid perpetuals — automated order
+              execution, position management, and real-time risk monitoring via API.
+            </p>
+            <div class="pg-card-footer">
+              <a href="contact.html" class="btn btn-secondary">Notify Me</a>
+            </div>
+          </div>
+
+        </div><!-- /.pg-card-grid -->
+
+        <!-- Empty state -->
+        <div class="pg-empty" id="toolsEmpty">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <p>No tools match your search.</p>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-logo">[Victoria] QUANT LAB</div>
+      <p class="footer-text">Quantitative Research &bull; Algorithmic Trading &bull; Systematic Strategies</p>
+      <div class="footer-links">
+        <a href="about.html">About</a>
+        <a href="research.html">Research</a>
+        <a href="tools.html">Tools</a>
+        <a href="marketplace.html">Marketplace</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>

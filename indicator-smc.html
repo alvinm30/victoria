@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SMC Concept Indicator — Victoria Quant Lab</title>
+  <meta name="description" content="Smart Money Concepts indicator for TradingView — BOS, CHoCH, Order Blocks, Fair Value Gaps, and liquidity levels in Pine Script." />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div id="particles-js"></div>
+  <div class="grid-overlay"></div>
+  <div class="scanline"></div>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-logo">
+      <span class="logo-bracket">[</span>Victoria<span class="logo-bracket">]</span> QUANT LAB
+    </a>
+    <div class="nav-toggle">
+      <span></span><span></span><span></span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="research.html">Research</a></li>
+      <li><a href="tools.html">Tools</a></li>
+      <li><a href="marketplace.html">Marketplace</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main class="main-content">
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+      <div class="hero-tag">// INDICATOR DETAIL</div>
+      <h1 class="section-title">SMC Concept Indicator</h1>
+      <div class="section-line"></div>
+      <p class="section-desc">
+        Smart Money Concepts indicator built in Pine Script for TradingView.
+        Plots institutional price action structures directly on the chart.
+      </p>
+    </section>
+
+    <!-- Overview -->
+    <section class="section">
+      <div class="container">
+
+        <div class="section-header">
+          <div class="section-tag">// OVERVIEW</div>
+          <h2 class="section-title">About This Indicator</h2>
+          <div class="section-line"></div>
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+          <span class="card-tag indicator" style="margin-right: 1rem;">INDICATOR</span>
+          <span class="card-meta">PLATFORM: TradingView &nbsp;|&nbsp; VERSION: 1.0 &nbsp;|&nbsp; LANGUAGE: Pine Script &nbsp;|&nbsp; AUTHOR: Victoria</span>
+        </div>
+
+        <div class="terminal-panel" style="max-width: 900px;">
+          <div class="terminal-header">
+            <span class="terminal-dot red"></span>
+            <span class="terminal-dot yellow"></span>
+            <span class="terminal-dot green"></span>
+            <span class="terminal-title">smc-indicator.overview</span>
+          </div>
+          <div class="terminal-body">
+            <p style="color: var(--text-secondary); line-height: 1.9; font-size: 0.9rem; margin-bottom: 1rem;">
+              This indicator encodes Smart Money Concepts (SMC) methodology directly onto the TradingView chart.
+              It is designed to help traders identify where institutional money is likely positioned — without
+              discretionary guesswork. Every element plotted has a defined rule-based condition.
+            </p>
+            <p style="color: var(--text-secondary); line-height: 1.9; font-size: 0.9rem;">
+              Built from actual trading use — not theoretical. The logic mirrors how I personally read
+              market structure: top-down bias from higher timeframes, then precision entries at lower
+              timeframe confirmations using Order Blocks and Fair Value Gaps.
+            </p>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="detail-action-row">
+          <a href="#" class="btn btn-primary">&#9655; View on TradingView</a>
+          <a href="marketplace.html" class="btn btn-secondary">&#9655; Get in Marketplace</a>
+          <a href="contact.html" class="btn btn-secondary">&#9655; Ask a Question</a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section class="section">
+      <div class="container">
+
+        <div class="section-header">
+          <div class="section-tag">// FEATURES</div>
+          <h2 class="section-title">What It Plots</h2>
+          <div class="section-line"></div>
+        </div>
+
+        <div class="feature-grid">
+
+          <div class="feature-item">
+            <h4>Break of Structure (BOS)</h4>
+            <p>Detects when price breaks a significant swing high or low, confirming a continuation of the current market structure direction.</p>
+          </div>
+
+          <div class="feature-item">
+            <h4>Change of Character (CHoCH)</h4>
+            <p>Identifies the first sign of a structural reversal — the shift from bullish to bearish structure or vice versa before BOS confirmation.</p>
+          </div>
+
+          <div class="feature-item">
+            <h4>Order Blocks (OB)</h4>
+            <p>Marks the last up/down candle before a strong impulsive move. These zones represent areas where institutional orders were likely placed.</p>
+          </div>
+
+          <div class="feature-item">
+            <h4>Fair Value Gaps (FVG)</h4>
+            <p>Highlights three-candle imbalances where price moved too fast, leaving unfilled gaps that price tends to return to fill.</p>
+          </div>
+
+          <div class="feature-item">
+            <h4>Liquidity Levels</h4>
+            <p>Identifies equal highs and equal lows where stop losses are clustered — areas where institutional players tend to hunt liquidity before moving.</p>
+          </div>
+
+          <div class="feature-item">
+            <h4>Configurable Settings</h4>
+            <p>Toggle each element on/off independently. Adjust lookback periods, color themes, and label visibility to suit your chart setup.</p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Pine Script Code -->
+    <section class="section">
+      <div class="container">
+
+        <div class="section-header">
+          <div class="section-tag">// SOURCE</div>
+          <h2 class="section-title">Pine Script Code</h2>
+          <div class="section-line"></div>
+          <p class="card-meta" style="margin-bottom: 0;">Pine Script v5 &nbsp;|&nbsp; Paste your code below to display it here.</p>
+        </div>
+
+        <div class="code-block" style="max-width: 900px;">
+          <div class="code-block-header">
+            <span class="code-lang-tag">Pine Script v5</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy Code</button>
+          </div>
+          <div class="code-body">
+            <pre id="smc-code">
+// ============================================================
+// Victoria SMC Concept Indicator
+// Author: Victoria | Victoria Quant Lab
+// Version: 1.0
+// Platform: TradingView (Pine Script v5)
+// ============================================================
+// Paste your Pine Script code here.
+// This section will display your actual indicator script
+// for visitors to view and use on TradingView.
+// ============================================================
+
+//@version=5
+indicator("Victoria SMC Concept Indicator", overlay=true, max_boxes_count=500, max_lines_count=500)
+
+// --- Inputs ---
+// Add your indicator inputs here
+
+// --- Logic ---
+// Add your BOS, CHoCH, Order Block, FVG, and liquidity logic here
+
+// --- Plots ---
+// Add your plots, labels, boxes, and lines here
+            </pre>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- How to Use -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag">// USAGE</div>
+          <h2 class="section-title">How to Use</h2>
+          <div class="section-line"></div>
+        </div>
+        <div class="terminal-panel" style="max-width: 900px;">
+          <div class="terminal-header">
+            <span class="terminal-dot red"></span>
+            <span class="terminal-dot yellow"></span>
+            <span class="terminal-dot green"></span>
+            <span class="terminal-title">usage-guide.md</span>
+          </div>
+          <div class="terminal-body">
+            <div class="terminal-line">
+              <span class="terminal-prompt">&gt; </span>
+              <span class="terminal-command">step 1:</span>
+              <span class="terminal-output"> Open TradingView and search "Victoria SMC Concept Indicator" in the indicator library.</span>
+            </div>
+            <div class="terminal-line">
+              <span class="terminal-prompt">&gt; </span>
+              <span class="terminal-command">step 2:</span>
+              <span class="terminal-output"> Add to chart. Use on a higher timeframe (H4/Daily) first to establish bias.</span>
+            </div>
+            <div class="terminal-line">
+              <span class="terminal-prompt">&gt; </span>
+              <span class="terminal-command">step 3:</span>
+              <span class="terminal-output"> Drop to lower timeframe (M15/H1) to find CHoCH/BOS confirmation for entry.</span>
+            </div>
+            <div class="terminal-line">
+              <span class="terminal-prompt">&gt; </span>
+              <span class="terminal-command">step 4:</span>
+              <span class="terminal-output"> Use Order Blocks and FVGs as entry zones. Set stop below/above the OB.</span>
+            </div>
+            <div class="terminal-line">
+              <span class="terminal-prompt">&gt; </span>
+              <span class="terminal-command">step 5:</span>
+              <span class="terminal-output"> Target the next liquidity pool (equal highs/lows) for take profit.</span>
+            </div>
+            <div class="terminal-line" style="margin-top: 0.5rem;">
+              <span class="terminal-prompt">&gt; </span>
+              <span class="cursor-blink"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Relevant Links -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag">// LINKS</div>
+          <h2 class="section-title">Relevant Resources</h2>
+          <div class="section-line"></div>
+        </div>
+        <div class="card-grid" style="max-width: 900px;">
+
+          <div class="card">
+            <span class="card-tag indicator">TRADINGVIEW</span>
+            <h3 class="card-title">Indicator on TradingView</h3>
+            <p class="card-desc">View, add to favourites, and use the indicator directly on TradingView Pine Script editor.</p>
+            <div class="card-footer">
+              <a href="#" class="btn btn-primary">Open TradingView</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <span class="card-tag" style="background: rgba(168,85,247,0.15); color: #a855f7; border-color: rgba(168,85,247,0.3);">MARKETPLACE</span>
+            <h3 class="card-title">Buy the Pro Version</h3>
+            <p class="card-desc">Full version with additional features, alerts, and ongoing updates available in the marketplace.</p>
+            <div class="card-footer">
+              <a href="marketplace.html" class="btn btn-secondary">View Marketplace</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Comments & Ideas -->
+    <section class="section comment-section">
+      <div class="container">
+
+        <div class="section-header">
+          <div class="section-tag">// COMMUNITY</div>
+          <h2 class="section-title">Comments &amp; Ideas</h2>
+          <div class="section-line"></div>
+          <p class="section-desc">Leave a comment, suggest an improvement, or share a trade idea using this indicator.</p>
+        </div>
+
+        <!-- Existing Comments -->
+        <div class="comment-list" style="max-width: 900px;">
+          <p class="no-comments-msg">&gt; No comments yet. Be the first to share an idea or feedback.</p>
+        </div>
+
+        <!-- Comment Form -->
+        <div class="terminal-panel" style="max-width: 900px;">
+          <div class="terminal-header">
+            <span class="terminal-dot red"></span>
+            <span class="terminal-dot yellow"></span>
+            <span class="terminal-dot green"></span>
+            <span class="terminal-title">submit-comment.sh</span>
+          </div>
+          <div class="terminal-body">
+            <div class="terminal-line" style="margin-bottom: 1.5rem;">
+              <span class="terminal-prompt">&gt; </span>
+              <span class="terminal-command">post_comment()</span>
+            </div>
+            <!-- Replace YOUR_FORM_ID with your Formspree form ID at formspree.io -->
+            <form action="https://formspree.io/f/xlgpgprp" method="POST">
+              <input type="hidden" name="_subject" value="SMC Indicator Comment — Victoria Quant Lab" />
+              <input type="hidden" name="page" value="indicator-smc" />
+
+              <div class="form-group">
+                <label class="form-label" for="c-name">&#9655; Name / Handle</label>
+                <input type="text" id="c-name" name="name" class="form-input" placeholder="Your name or anonymous handle..." required />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="c-type">&#9655; Type</label>
+                <select id="c-type" name="type" class="form-input">
+                  <option value="comment">Comment</option>
+                  <option value="idea">Trade Idea</option>
+                  <option value="suggestion">Improvement Suggestion</option>
+                  <option value="bug">Bug Report</option>
+                  <option value="collaboration">Collaboration Proposal</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="c-msg">&#9655; Message</label>
+                <textarea id="c-msg" name="message" class="form-textarea" placeholder="Share your comment, idea, or suggestion..." required></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary">&#9655; Submit</button>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-logo">[Victoria] QUANT LAB</div>
+      <p class="footer-text">Quantitative Research &bull; Algorithmic Trading &bull; Systematic Strategies</p>
+      <div class="footer-links">
+        <a href="about.html">About</a>
+        <a href="research.html">Research</a>
+        <a href="tools.html">Tools</a>
+        <a href="marketplace.html">Marketplace</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="js/script.js"></script>
+  <script>
+    function copyCode(btn) {
+      const code = document.getElementById('smc-code').innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = 'Copy Code';
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>

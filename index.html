@@ -6,6 +6,7 @@
   <title>Victoria Quant Lab — Quantitative Trading Research</title>
   <meta name="description" content="Independent research on systematic trading, market microstructure, and algorithmic investment strategies." />
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 <body>
 
@@ -31,7 +32,7 @@
       <li><a href="index.html" class="active">Home</a></li>
       <li><a href="about.html">About</a></li>
       <li><a href="research.html">Research</a></li>
-      <li><a href="indicators.html">Indicators</a></li>
+      <li><a href="tools.html">Tools</a></li>
       <li><a href="marketplace.html">Marketplace</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
@@ -47,82 +48,334 @@
         <h1 class="hero-title">Victoria Quant Lab</h1>
         <p class="hero-subtitle">Quantitative Trading &bull; Algorithmic Systems &bull; Market Research</p>
         <p class="hero-desc">
-          Independent research on systematic trading, market microstructure,
-          and algorithmic investment strategies.
+          Multi-strategy systematic trading operation: SMC, Statistical Arbitrage, CTA models,
+          and quantitative signal research — deployed on live capital across MT4/MT5, HyperLiquid, and TradingView.
         </p>
         <div class="hero-buttons">
           <a href="research.html" class="btn btn-primary">&#9655; Explore Research</a>
-          <a href="indicators.html" class="btn btn-secondary">&#9670; View Indicators</a>
+          <a href="tools.html" class="btn btn-secondary">&#9670; View Tools</a>
         </div>
       </div>
     </section>
 
-    <!-- Overview Section -->
-    <section class="section">
-      <div class="container">
-        <div class="section-header">
+    <!-- ═══════════════════════════════════════
+         WHAT WE DO — with live canvas animations
+    ═══════════════════════════════════════ -->
+    <section class="wwd-section" id="what-we-do">
+      <div class="wwd-inner">
+
+        <div class="wwd-text-col">
           <div class="section-tag">// SYSTEM OVERVIEW</div>
-          <h2 class="section-title">What We Do</h2>
+          <h2 class="wwd-title">What We Do</h2>
           <div class="section-line"></div>
-          <p class="section-desc">
-            Building systematic tools and sharing quantitative insights
-            for algorithmic traders and researchers.
+          <p class="wwd-desc">
+            Building systematic tools, sharing quantitative insights, and engineering
+            production-grade algorithmic trading systems — from signal research to live deployment.
           </p>
-        </div>
-
-        <div class="card-grid">
-          <div class="card">
-            <span class="card-icon">&#128202;</span>
-            <h3 class="card-title">Trading Systems</h3>
-            <p class="card-desc">
-              Development of automated trading strategies built on statistical
-              models and quantitative analysis.
-            </p>
-            <div class="card-footer">
-              <a href="research.html" class="btn btn-primary">Learn More</a>
-            </div>
-          </div>
-
-          <div class="card">
-            <span class="card-icon">&#128200;</span>
-            <h3 class="card-title">Custom Indicators</h3>
-            <p class="card-desc">
-              Proprietary technical indicators published on TradingView,
-              built from quantitative research.
-            </p>
-            <div class="card-footer">
-              <a href="indicators.html" class="btn btn-primary">View All</a>
-            </div>
-          </div>
-
-          <div class="card">
-            <span class="card-icon">&#128218;</span>
-            <h3 class="card-title">Research Papers</h3>
-            <p class="card-desc">
-              In-depth analysis of market microstructure, volatility modeling,
-              and statistical arbitrage methods.
-            </p>
-            <div class="card-footer">
-              <a href="research.html" class="btn btn-primary">Read Now</a>
-            </div>
-          </div>
-
-          <div class="card">
-            <span class="card-icon">&#128640;</span>
-            <h3 class="card-title">Marketplace</h3>
-            <p class="card-desc">
-              Coming soon — a marketplace for premium trading indicators,
-              expert advisors, and research tools.
-            </p>
-            <div class="card-footer">
-              <a href="marketplace.html" class="btn btn-secondary">Coming Soon</a>
-            </div>
+          <p class="wwd-desc">
+            Operates a multi-strategy approach: <span class="text-highlight">SMC</span>,
+            <span class="text-highlight">Statistical Arbitrage</span>,
+            <span class="text-highlight">CTA / Trend-Following</span>, and
+            <span class="text-highlight">Quantitative Models</span> — each independently
+            backtested and running on real capital. Open to
+            <span class="text-highlight">investors</span>
+            and <span class="text-highlight">collaborators</span> who share the vision of
+            data-driven, systematic market approaches.
+          </p>
+          <div class="wwd-stats">
+            <div class="wwd-stat"><span class="wwd-stat-num">7+</span><span class="wwd-stat-lbl">Years Trading</span></div>
+            <div class="wwd-stat"><span class="wwd-stat-num">1+</span><span class="wwd-stat-lbl">Yr Algo Dev</span></div>
           </div>
         </div>
+
+        <div class="wwd-canvas-col">
+          <div class="wwd-canvas-wrap">
+            <div class="wwd-canvas-label">
+              <i class="fa-solid fa-chart-bar"></i> PRICE ACTION — SMC LIVE
+            </div>
+            <canvas id="candleCanvas" class="wwd-canvas"></canvas>
+          </div>
+          <div class="wwd-canvas-wrap">
+            <div class="wwd-canvas-label">
+              <i class="fa-solid fa-mountain"></i> VOLATILITY SURFACE &sigma;(K,T)
+            </div>
+            <canvas id="volSurfaceCanvas" class="wwd-canvas"></canvas>
+          </div>
+        </div>
+
       </div>
     </section>
 
-    <!-- Terminal Section -->
+    <!-- ═══════════════════════════════════════
+         FEATURE 01 — Production Trading Systems
+    ═══════════════════════════════════════ -->
+    <section class="feat-section" data-num="01">
+      <div class="feat-layout">
+
+        <div class="feat-content">
+          <span class="feat-num">// 01</span>
+          <h2 class="feat-title">Production Trading Systems</h2>
+          <p class="feat-desc">
+            End-to-end algorithmic system development — from strategy research and
+            quantitative backtesting to live execution on real capital. Complete pipelines
+            built across multiple methodologies: SMC structural confluence, statistical
+            arbitrage, CTA trend-following, and quantitative signal models — all with
+            unified risk management, order routing, and performance monitoring.
+          </p>
+          <ul class="feat-bullets">
+            <li>Multi-strategy signal generation: SMC, Stat Arb, CTA &amp; quant models</li>
+            <li>Walk-forward backtesting with Monte Carlo risk analysis</li>
+            <li>Live execution with dynamic position sizing &amp; drawdown protection</li>
+            <li>Real-time performance dashboards and trade logging</li>
+          </ul>
+          <div class="feat-cta">
+            <a href="research.html" class="btn btn-primary">View Research</a>
+            <a href="contact.html" class="btn btn-secondary">Collaborate</a>
+          </div>
+        </div>
+
+        <div class="feat-visual">
+          <div class="terminal-panel feat-terminal">
+            <div class="terminal-header">
+              <span class="terminal-dot red"></span>
+              <span class="terminal-dot yellow"></span>
+              <span class="terminal-dot green"></span>
+              <span class="terminal-title">algo-engine :: live-feed</span>
+            </div>
+            <div class="terminal-body">
+              <div class="terminal-line"><span class="terminal-output">[SIGNAL] BOS detected @ 2087.40 (SMC)</span></div>
+              <div class="terminal-line"><span class="terminal-output">[SIGNAL] Spread Z-score: -2.31 (StatArb)</span></div>
+              <div class="terminal-line"><span class="terminal-output">[SIGNAL] Trend filter: LONG (CTA/ATR)</span></div>
+              <div class="terminal-line"><span class="terminal-output">[ENTRY]  LONG  XAU/USD  0.02 lot</span></div>
+              <div class="terminal-line"><span class="terminal-output">[SL]     2079.20  |  TP: 2098.00</span></div>
+              <div class="terminal-line"><span class="terminal-output">[R:R]    1 : 2.6</span></div>
+              <div class="terminal-line"><span class="terminal-output" style="margin-top:0.4rem;">[OK] Risk: within 1% threshold</span></div>
+              <div class="terminal-line"><span class="terminal-output">[OK] Session: London Open</span></div>
+              <div class="terminal-line"><span class="terminal-output">[OK] All filters: passed (4/4)</span></div>
+              <div class="terminal-line" style="margin-top:0.5rem;"><span class="terminal-prompt">&gt; </span><span class="cursor-blink"></span></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         FEATURE 02 — Trading Tools & Indicators
+    ═══════════════════════════════════════ -->
+    <section class="feat-section feat-alt" data-num="02">
+      <div class="feat-layout">
+
+        <div class="feat-visual">
+          <div class="feat-badge-panel">
+
+            <!-- Interactive icon display — switches on hover/click -->
+            <div class="feat-badge-icon" id="toolDisplay">
+              <i class="fa-solid fa-wave-square" id="toolDisplayIcon"></i>
+              <div class="feat-badge-icon-meta">
+                <span class="feat-badge-icon-cat" id="toolDisplayCat">LIVE</span>
+                <span class="feat-badge-icon-label" id="toolDisplayLabel">SMC All-in-One Indicator</span>
+                <span class="feat-badge-icon-tag" id="toolDisplayTag">TradingView · Pine Script</span>
+              </div>
+            </div>
+
+            <!-- All tools — one entry per indicator, hover to preview -->
+            <div class="feat-badge-list">
+
+              <!-- SMC All-in-One — LIVE -->
+              <span class="feat-badge feat-badge--active"
+                    data-icon="fa-wave-square"
+                    data-cat="LIVE"
+                    data-label="SMC All-in-One Indicator"
+                    data-tag="TradingView · Pine Script">
+                <i class="fa-solid fa-circle" style="color:#28ca42;font-size:0.55rem;"></i>
+                SMC All-in-One Indicator
+              </span>
+
+              <!-- Moving Average AI — Coming Soon -->
+              <span class="feat-badge feat-badge-soon"
+                    data-icon="fa-brain"
+                    data-cat="SOON"
+                    data-label="Moving Average AI"
+                    data-tag="TradingView · Pine Script">
+                <i class="fa-solid fa-clock"></i> Moving Average AI
+              </span>
+
+              <!-- Statistical Arbitrage — In Dev -->
+              <span class="feat-badge feat-badge-soon"
+                    data-icon="fa-arrows-left-right"
+                    data-cat="DEV"
+                    data-label="Statistical Arbitrage Toolkit"
+                    data-tag="Python · Crypto / FX">
+                <i class="fa-solid fa-clock"></i> Statistical Arbitrage Toolkit
+              </span>
+
+              <!-- CTA Trend System — In Dev -->
+              <span class="feat-badge feat-badge-soon"
+                    data-icon="fa-arrow-trend-up"
+                    data-cat="DEV"
+                    data-label="CTA Trend System"
+                    data-tag="Python · MT5 · Multi-Asset">
+                <i class="fa-solid fa-clock"></i> CTA Trend System
+              </span>
+
+              <!-- Expert Advisor Suite — In Dev -->
+              <span class="feat-badge feat-badge-soon"
+                    data-icon="fa-microchip"
+                    data-cat="DEV"
+                    data-label="Expert Advisor Suite"
+                    data-tag="MT4 / MT5 · MQL4 / MQL5">
+                <i class="fa-solid fa-clock"></i> Expert Advisor Suite
+              </span>
+
+            </div>
+
+          </div>
+          <div class="feat-platform-row">
+            <span class="feat-platform">TradingView</span>
+            <span class="feat-platform">Pine Script v5</span>
+            <span class="feat-platform">Python</span>
+            <span class="feat-platform">MT4 / MT5</span>
+            <span class="feat-platform">MQL5</span>
+          </div>
+        </div>
+
+        <div class="feat-content">
+          <span class="feat-num">// 02</span>
+          <h2 class="feat-title">Trading Tools &amp; Indicators</h2>
+          <p class="feat-desc">
+            A growing toolkit designed to support better trading decisions and a
+            cleaner analytical experience — across every strategy. One indicator
+            per purpose, built from real market use. Hover any tool on the left
+            to see what’s live and what’s in the pipeline.
+          </p>
+          <ul class="feat-bullets">
+            <li>SMC All-in-One — structure, order flow &amp; imbalance in a single tool</li>
+            <li>AI-enhanced indicators in development (Moving Average AI &amp; more)</li>
+            <li>Systematic toolkits for Statistical Arbitrage &amp; CTA strategies</li>
+            <li>Automated Expert Advisors for MT4/MT5 coming soon</li>
+          </ul>
+          <div class="feat-tags">
+            <span class="fr-tag">TradingView</span>
+            <span class="fr-tag">Python</span>
+          </div>
+          <div class="feat-cta">
+            <a href="tools.html" class="btn btn-primary">View All Tools</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         FEATURE 03 — Market Research & Analysis
+    ═══════════════════════════════════════ -->
+    <section class="feat-section" data-num="03">
+      <div class="feat-layout">
+
+        <div class="feat-content">
+          <span class="feat-num">// 03</span>
+          <h2 class="feat-title">Market Research &amp; Analysis</h2>
+          <p class="feat-desc">
+            In-depth research notes grounded in 7+ years of active market participation.
+            We combine macro fundamentals, geopolitical context, technical market
+            structure (SMC), statistical analysis, and quantitative modelling to deliver
+            clear, actionable insights — freely shared with the community.
+          </p>
+          <ul class="feat-bullets">
+            <li>Commodity markets: oil, gold, and macro drivers</li>
+            <li>Statistical arbitrage: spread dynamics &amp; cointegration studies</li>
+            <li>CTA / trend-following strategy research</li>
+            <li>Downloadable PDF research notes</li>
+          </ul>
+          <div class="feat-tags">
+            <span class="fr-tag">Oil / Commodities</span>
+            <span class="fr-tag">Macro</span>
+            <span class="fr-tag">Stat Arb</span>
+            <span class="fr-tag">CTA Research</span>
+            <span class="fr-tag">SMC</span>
+          </div>
+          <div class="feat-cta">
+            <a href="research.html" class="btn btn-primary">Browse Research</a>
+          </div>
+        </div>
+
+        <div class="feat-visual">
+          <div class="terminal-panel feat-terminal">
+            <div class="terminal-header">
+              <span class="terminal-dot red"></span>
+              <span class="terminal-dot yellow"></span>
+              <span class="terminal-dot green"></span>
+              <span class="terminal-title">oil-market-note.md</span>
+            </div>
+            <div class="terminal-body">
+              <div class="terminal-section-h4">// TECHNICAL BIAS</div>
+              <div class="terminal-line"><span class="terminal-output">Asset ...... WTI Crude Oil</span></div>
+              <div class="terminal-line"><span class="terminal-output">Bias ....... <span style="color:#00d4ff;font-weight:600;">BULLISH</span> (medium-term)</span></div>
+              <div class="terminal-line"><span class="terminal-output">Key OB ..... $78.40 — $80.20</span></div>
+              <div class="terminal-line"><span class="terminal-output">BOS ........ Confirmed &gt; $82.00</span></div>
+              <div class="terminal-section-h4" style="margin-top:0.75rem;">// MACRO DRIVERS</div>
+              <div class="terminal-line"><span class="terminal-output">OPEC+ supply constraints active</span></div>
+              <div class="terminal-line"><span class="terminal-output">USD Index .. bearish divergence</span></div>
+              <div class="terminal-line"><span class="terminal-output">Geopolitics  elevated risk premium</span></div>
+              <div class="terminal-line" style="margin-top:0.5rem;"><span class="terminal-prompt">&gt; </span><span class="cursor-blink"></span></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         FEATURE 04 — Marketplace & Collaboration
+    ═══════════════════════════════════════ -->
+    <section class="feat-section feat-alt" data-num="04">
+      <div class="feat-layout">
+
+        <div class="feat-visual">
+          <div class="feat-collab-panel">
+            <div class="feat-collab-icon"><i class="fa-solid fa-handshake"></i></div>
+            <p class="feat-collab-heading">Open to Investors &amp; Collaborators</p>
+            <div class="feat-collab-items">
+              <div class="feat-collab-item"><i class="fa-solid fa-circle-dot"></i> Seed funding &amp; investment partnerships</div>
+              <div class="feat-collab-item"><i class="fa-solid fa-circle-dot"></i> Quant researcher collaboration</div>
+              <div class="feat-collab-item"><i class="fa-solid fa-circle-dot"></i> Developer integration projects</div>
+              <div class="feat-collab-item"><i class="fa-solid fa-circle-dot"></i> Premium tool licensing</div>
+              <div class="feat-collab-item"><i class="fa-solid fa-circle-dot"></i> Custom system development</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="feat-content">
+          <span class="feat-num">// 04</span>
+          <h2 class="feat-title">Marketplace &amp; Collaboration</h2>
+          <p class="feat-desc">
+            A growing marketplace for premium trading tools — indicators, automated strategies,
+            and algorithmic systems. We are actively building and remain open to investors and
+            collaborators who share a vision of data-driven, systematic market approaches.
+          </p>
+          <ul class="feat-bullets">
+            <li>Premium indicators &amp; EAs for sale — launching soon</li>
+            <li>Open to seed funding and investment partnerships</li>
+            <li>Collaboration with quant researchers and developers</li>
+            <li>Custom system development available on request</li>
+          </ul>
+          <div class="feat-tags">
+            <span class="fr-tag">Premium Tools</span>
+            <span class="fr-tag">Investors Welcome</span>
+            <span class="fr-tag">Collaboration</span>
+            <span class="fr-tag">Custom Dev</span>
+          </div>
+          <div class="feat-cta">
+            <a href="marketplace.html" class="btn btn-secondary">Visit Marketplace</a>
+            <a href="contact.html" class="btn btn-primary">Get in Touch</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Terminal Status -->
     <section class="section">
       <div class="container" style="max-width: 700px;">
         <div class="terminal-panel">
@@ -141,13 +394,19 @@
               <span class="terminal-output">[OK] Research Engine ........... ONLINE</span>
             </div>
             <div class="terminal-line">
-              <span class="terminal-output">[OK] Indicator Pipeline ....... ACTIVE</span>
+              <span class="terminal-output">[OK] SMC Pipeline .............. ACTIVE</span>
             </div>
             <div class="terminal-line">
-              <span class="terminal-output">[OK] Strategy Backtester ...... RUNNING</span>
+              <span class="terminal-output">[OK] Stat Arb Engine ........... ACTIVE</span>
             </div>
             <div class="terminal-line">
-              <span class="terminal-output">[..] Marketplace Module ....... </span>
+              <span class="terminal-output">[OK] CTA Trend Model ........... ACTIVE</span>
+            </div>
+            <div class="terminal-line">
+              <span class="terminal-output">[OK] Walk-Forward Backtester ... RUNNING</span>
+            </div>
+            <div class="terminal-line">
+              <span class="terminal-output">[..] Marketplace Module ........ </span>
               <span class="terminal-highlight">COMING SOON</span>
             </div>
             <div class="terminal-line" style="margin-top: 0.5rem;">
@@ -169,7 +428,7 @@
       <div class="footer-links">
         <a href="about.html">About</a>
         <a href="research.html">Research</a>
-        <a href="indicators.html">Indicators</a>
+        <a href="tools.html">Tools</a>
         <a href="marketplace.html">Marketplace</a>
         <a href="contact.html">Contact</a>
       </div>

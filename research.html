@@ -6,6 +6,7 @@
   <title>Research — Victoria Quant Lab</title>
   <meta name="description" content="Quantitative research articles on systematic trading, volatility modeling, and market microstructure." />
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 <body>
 
@@ -25,7 +26,7 @@
       <li><a href="index.html">Home</a></li>
       <li><a href="about.html">About</a></li>
       <li><a href="research.html">Research</a></li>
-      <li><a href="indicators.html">Indicators</a></li>
+      <li><a href="tools.html">Tools</a></li>
       <li><a href="marketplace.html">Marketplace</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
@@ -39,108 +40,183 @@
       <h1 class="section-title">Research</h1>
       <div class="section-line"></div>
       <p class="section-desc">
-        In-depth quantitative analysis of trading strategies, market behavior,
-        and algorithmic system design.
+        Quantitative analysis across multiple strategy domains: commodity macro,
+        statistical arbitrage, CTA trend-following, and systematic quant research.
       </p>
     </section>
 
-    <!-- Research Cards -->
-    <section class="section">
-      <div class="container">
-        <div class="card-grid">
-
-          <!-- Card 1 -->
-          <div class="card">
-            <span class="card-tag research">RESEARCH</span>
-            <h3 class="card-title">Mean Reversion Systems in FX Markets</h3>
-            <p class="card-meta">PUBLISHED: 2026.01 &nbsp;|&nbsp; CATEGORY: STRATEGY</p>
-            <p class="card-desc">
-              An analysis of mean reversion strategies applied to major currency
-              pairs, examining entry/exit signals derived from Bollinger Band
-              deviations and Z-score thresholds. Includes backtesting results
-              across multiple timeframes.
-            </p>
-            <div class="card-footer">
-              <a href="#" class="btn btn-primary">Read More</a>
-            </div>
-          </div>
-
-          <!-- Card 2 -->
-          <div class="card">
-            <span class="card-tag research">RESEARCH</span>
-            <h3 class="card-title">Market Microstructure &amp; Order Flow</h3>
-            <p class="card-meta">PUBLISHED: 2025.11 &nbsp;|&nbsp; CATEGORY: MICROSTRUCTURE</p>
-            <p class="card-desc">
-              Exploring tick-level data to understand how order flow imbalances
-              predict short-term price movements. Examines bid-ask dynamics,
-              market maker behavior, and liquidity patterns in equity markets.
-            </p>
-            <div class="card-footer">
-              <a href="#" class="btn btn-primary">Read More</a>
-            </div>
-          </div>
-
-          <!-- Card 3 -->
-          <div class="card">
-            <span class="card-tag research">RESEARCH</span>
-            <h3 class="card-title">Volatility Surface Modeling with GARCH</h3>
-            <p class="card-meta">PUBLISHED: 2025.09 &nbsp;|&nbsp; CATEGORY: VOLATILITY</p>
-            <p class="card-desc">
-              A comparative study of GARCH family models for forecasting realized
-              volatility. Evaluates GARCH(1,1), EGARCH, and GJR-GARCH across
-              commodities and indices with out-of-sample performance metrics.
-            </p>
-            <div class="card-footer">
-              <a href="#" class="btn btn-primary">Read More</a>
-            </div>
-          </div>
-
-          <!-- Card 4 -->
-          <div class="card">
-            <span class="card-tag research">RESEARCH</span>
-            <h3 class="card-title">Statistical Arbitrage: Pairs Trading</h3>
-            <p class="card-meta">PUBLISHED: 2025.07 &nbsp;|&nbsp; CATEGORY: ARBITRAGE</p>
-            <p class="card-desc">
-              Implementation of cointegration-based pairs trading strategies on
-              correlated equity pairs. Covers Engle-Granger methodology, spread
-              construction, and optimal execution with transaction cost analysis.
-            </p>
-            <div class="card-footer">
-              <a href="#" class="btn btn-primary">Read More</a>
-            </div>
-          </div>
-
-          <!-- Card 5 -->
-          <div class="card">
-            <span class="card-tag research">RESEARCH</span>
-            <h3 class="card-title">Crypto Market Dynamics &amp; Regime Detection</h3>
-            <p class="card-meta">PUBLISHED: 2025.05 &nbsp;|&nbsp; CATEGORY: CRYPTO</p>
-            <p class="card-desc">
-              Applying Hidden Markov Models to detect market regimes in
-              cryptocurrency markets. Identifies bull, bear, and sideways states
-              to dynamically adapt trading strategy parameters for BTC and ETH.
-            </p>
-            <div class="card-footer">
-              <a href="#" class="btn btn-primary">Read More</a>
-            </div>
-          </div>
-
-          <!-- Card 6 -->
-          <div class="card">
-            <span class="card-tag research">RESEARCH</span>
-            <h3 class="card-title">Momentum Factor Analysis Across Asset Classes</h3>
-            <p class="card-meta">PUBLISHED: 2025.03 &nbsp;|&nbsp; CATEGORY: FACTOR MODELS</p>
-            <p class="card-desc">
-              Cross-sectional momentum analysis spanning equities, futures, and
-              FX. Investigates time-series momentum, look-back period optimization,
-              and the interaction between momentum and volatility scaling.
-            </p>
-            <div class="card-footer">
-              <a href="#" class="btn btn-primary">Read More</a>
-            </div>
-          </div>
-
+    <!-- ── CATEGORY TAB BAR ──────────────────────── -->
+    <div class="pg-tab-bar" id="researchTabBar">
+      <div class="pg-tab-inner">
+        <button class="pg-tab active" data-tab="all">
+          <i class="fa-solid fa-border-all"></i> All
+          <span class="pg-tab-count" id="rcount-all">3</span>
+        </button>
+        <button class="pg-tab" data-tab="commodities">
+          <i class="fa-solid fa-oil-well"></i> Commodities
+          <span class="pg-tab-count" id="rcount-commodities">1</span>
+        </button>
+        <button class="pg-tab" data-tab="stat-arb">
+          <i class="fa-solid fa-arrows-left-right"></i> Stat Arb
+          <span class="pg-tab-count" id="rcount-stat-arb">1</span>
+        </button>
+        <button class="pg-tab" data-tab="cta">
+          <i class="fa-solid fa-arrow-trend-up"></i> CTA
+          <span class="pg-tab-count" id="rcount-cta">1</span>
+        </button>
+        <div class="pg-tab-search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="researchSearch" placeholder="Search research..." autocomplete="off" />
         </div>
+      </div>
+    </div>
+
+    <!-- ── STATUS STRIP ──────────────────────────── -->
+    <div class="pg-status-strip">
+      <div class="container">
+        <span class="pg-status-item" id="researchShowing">Showing 3 notes</span>
+      </div>
+    </div>
+
+    <!-- ── RESEARCH CARD LIST ─────────────────────── -->
+    <section class="section" style="padding-top:2rem;">
+      <div class="container">
+        <div class="pg-research-list" id="researchGrid">
+
+          <!-- OIL MARKET NOTE -->
+          <div class="pg-research-card" data-category="commodities" data-title="Oil Market Analysis">
+            <div class="pg-rc-header">
+              <div class="pg-rc-meta">
+                <span class="pg-tag pg-tag--commodity">COMMODITIES</span>
+                <span class="pg-rc-date">2026.03</span>
+              </div>
+              <button class="pg-rc-toggle" aria-expanded="false" aria-label="Expand">
+                <i class="fa-solid fa-chevron-down"></i>
+              </button>
+            </div>
+            <h3 class="pg-rc-title">Oil Market Analysis</h3>
+            <p class="pg-rc-summary">
+              WTI / Brent macro outlook — supply &amp; demand dynamics, geopolitical risk
+              premium, OPEC+ constraints, and key technical price levels.
+            </p>
+            <div class="pg-rc-actions">
+              <a href="research-oil.html" class="btn btn-primary">Read Full Note</a>
+              <a href="research/oil-market-note.pdf" class="btn btn-secondary" download>&#8659; PDF</a>
+            </div>
+            <div class="pg-rc-body" hidden>
+              <div class="terminal-panel" style="margin-top:1.5rem;">
+                <div class="terminal-header">
+                  <span class="terminal-dot red"></span>
+                  <span class="terminal-dot yellow"></span>
+                  <span class="terminal-dot green"></span>
+                  <span class="terminal-title">oil-market-note.md</span>
+                </div>
+                <div class="terminal-body">
+                  <h4 class="terminal-section-h4">// OVERVIEW</h4>
+                  <p>[ Coming soon — add your overview here ]</p>
+                  <h4 class="terminal-section-h4">// SUPPLY &amp; DEMAND DYNAMICS</h4>
+                  <p>[ Coming soon — add your supply &amp; demand analysis here ]</p>
+                  <h4 class="terminal-section-h4">// GEOPOLITICAL FACTORS</h4>
+                  <p>[ Coming soon — add your geopolitical factor analysis here ]</p>
+                  <h4 class="terminal-section-h4">// TECHNICAL PRICE OUTLOOK</h4>
+                  <p>[ Coming soon — add your technical price outlook here ]</p>
+                  <h4 class="terminal-section-h4">// KEY LEVELS &amp; TRADE IDEAS</h4>
+                  <p>[ Coming soon — add your key levels and trade ideas here ]</p>
+                  <h4 class="terminal-section-h4">// CONCLUSION</h4>
+                  <p>[ Coming soon — add your conclusion here ]</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- STAT ARB RESEARCH -->
+          <div class="pg-research-card" data-category="stat-arb" data-title="Statistical Arbitrage Studies">
+            <div class="pg-rc-header">
+              <div class="pg-rc-meta">
+                <span class="pg-tag pg-tag--strategy">STAT ARB</span>
+                <span class="pg-rc-date">2026 — Ongoing</span>
+              </div>
+              <button class="pg-rc-toggle" aria-expanded="false" aria-label="Expand">
+                <i class="fa-solid fa-chevron-down"></i>
+              </button>
+            </div>
+            <h3 class="pg-rc-title">Statistical Arbitrage Studies</h3>
+            <p class="pg-rc-summary">
+              Cointegration testing, z-score signal construction, dynamic hedge ratios,
+              and walk-forward backtest results across FX and crypto pairs.
+            </p>
+            <div class="pg-rc-actions">
+              <span class="btn btn-disabled">Full Note — Coming Soon</span>
+            </div>
+            <div class="pg-rc-body" hidden>
+              <div class="terminal-panel" style="margin-top:1.5rem;">
+                <div class="terminal-header">
+                  <span class="terminal-dot red"></span>
+                  <span class="terminal-dot yellow"></span>
+                  <span class="terminal-dot green"></span>
+                  <span class="terminal-title">stat-arb-research.md</span>
+                </div>
+                <div class="terminal-body">
+                  <h4 class="terminal-section-h4">// PAIRS SELECTION &amp; COINTEGRATION</h4>
+                  <p>[ Coming soon — ADF / Johansen tests, pair selection criteria across FX and crypto. ]</p>
+                  <h4 class="terminal-section-h4">// SPREAD DYNAMICS &amp; ENTRY SIGNAL</h4>
+                  <p>[ Coming soon — z-score construction, rolling hedge ratio estimation (OLS/Kalman). ]</p>
+                  <h4 class="terminal-section-h4">// RISK &amp; CAPACITY</h4>
+                  <p>[ Coming soon — position sizing, stop logic, capacity and correlation breakdown scenarios. ]</p>
+                  <h4 class="terminal-section-h4">// BACKTEST RESULTS</h4>
+                  <p>[ Coming soon — walk-forward results, Sharpe, max drawdown, Monte Carlo distribution. ]</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CTA RESEARCH -->
+          <div class="pg-research-card" data-category="cta" data-title="CTA Trend-Following Research">
+            <div class="pg-rc-header">
+              <div class="pg-rc-meta">
+                <span class="pg-tag pg-tag--cta">CTA</span>
+                <span class="pg-rc-date">2026 — Ongoing</span>
+              </div>
+              <button class="pg-rc-toggle" aria-expanded="false" aria-label="Expand">
+                <i class="fa-solid fa-chevron-down"></i>
+              </button>
+            </div>
+            <h3 class="pg-rc-title">CTA / Trend-Following Research</h3>
+            <p class="pg-rc-summary">
+              Systematic trend signal design, ATR-normalised momentum, portfolio
+              risk model, and regime analysis across trending vs range-bound markets.
+            </p>
+            <div class="pg-rc-actions">
+              <span class="btn btn-disabled">Full Note — Coming Soon</span>
+            </div>
+            <div class="pg-rc-body" hidden>
+              <div class="terminal-panel" style="margin-top:1.5rem;">
+                <div class="terminal-header">
+                  <span class="terminal-dot red"></span>
+                  <span class="terminal-dot yellow"></span>
+                  <span class="terminal-dot green"></span>
+                  <span class="terminal-title">cta-trend-research.md</span>
+                </div>
+                <div class="terminal-body">
+                  <h4 class="terminal-section-h4">// SIGNAL CONSTRUCTION</h4>
+                  <p>[ Coming soon — rolling breakout, MA crossover variants, ATR-normalised momentum. ]</p>
+                  <h4 class="terminal-section-h4">// PORTFOLIO &amp; RISK MODEL</h4>
+                  <p>[ Coming soon — volatility-targeting sizing, cross-asset correlation, drawdown circuit-breakers. ]</p>
+                  <h4 class="terminal-section-h4">// PERFORMANCE ANALYSIS</h4>
+                  <p>[ Coming soon — walk-forward results, Calmar ratio, regime analysis. ]</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /.pg-research-list -->
+
+        <!-- Empty state -->
+        <div class="pg-empty" id="researchEmpty" style="display:none;">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <p>No research notes match your search.</p>
+        </div>
+
       </div>
     </section>
 
@@ -153,7 +229,7 @@
       <div class="footer-links">
         <a href="about.html">About</a>
         <a href="research.html">Research</a>
-        <a href="indicators.html">Indicators</a>
+        <a href="tools.html">Tools</a>
         <a href="marketplace.html">Marketplace</a>
         <a href="contact.html">Contact</a>
       </div>
