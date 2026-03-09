@@ -303,7 +303,7 @@
     var speedEl = document.getElementById('btSpeed');
     var speedLabel = document.getElementById('btSpeedLabel');
     var liveStatus = document.getElementById('btLiveStatus');
-    var csvInput = document.getElementById('btCsvFile');
+    var skipBtn = document.getElementById('btSkipBtn');
 
     var metricEls = {
       netPnl: document.getElementById('btNetPnl'),
@@ -755,6 +755,18 @@
       if (liveStatus) liveStatus.textContent = 'Paused';
     }
 
+    function skipToEnd() {
+      if (!data.length) return;
+      pauseBacktest();
+      while (playbackIndex < data.length - 1) {
+        playbackIndex++;
+        processCandle(playbackIndex);
+      }
+      if (state.position) closePosition(playbackIndex, 'end');
+      drawChart();
+      updateReport(true);
+    }
+
     function parseCsvText(text) {
       var lines = text.trim().split(/\r?\n/);
       rawData = [];
@@ -783,7 +795,7 @@
         })
         .catch(function () {
           if (liveStatus) {
-            liveStatus.textContent = 'Auto-load blocked. Click Load CSV and choose btc5m.csv';
+            liveStatus.textContent = 'Could not load data/btc5m.csv. Please run with a local server.';
           }
         });
     }
@@ -807,6 +819,7 @@
       if (!rawData.length) return;
       buildDataFromSettings();
     });
+    if (skipBtn) skipBtn.addEventListener('click', skipToEnd);
 
     [maTypeEl, fastEl, slowEl, riskEl, capitalEl, sessionEl].forEach(function (el) {
       if (!el) return;
@@ -817,26 +830,100 @@
       });
     });
 
-    if (csvInput) {
-      csvInput.addEventListener('change', function () {
-        var file = csvInput.files && csvInput.files[0];
-        if (!file) return;
-        var reader = new FileReader();
-        reader.onload = function (ev) {
-          var ok = parseCsvText(String(ev.target.result || ''));
-          if (ok && liveStatus) {
-            liveStatus.textContent = 'Loaded from file · ' + rawData.length + ' candles';
-          }
-        };
-        reader.onerror = function () {
-          if (liveStatus) liveStatus.textContent = 'Could not read selected CSV file';
-        };
-        reader.readAsText(file);
-      });
-    }
-
     drawChart();
     loadData();
+  }());
+
+  // ============================================
+  // TOOLS: KNOW MORE PREVIEW CHART
+  // ============================================
+  (function () {
+    var canvas = document.getElementById('btShowcaseCanvas');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+
+    function drawPreview(rows) {
+      var data = rows.slice(-120);
+      if (!data.length) return;
+      var w = canvas.width;
+      var h = canvas.height;
+      ctx.clearRect(0, 0, w, h);
+
+      var pad = { l: 24, r: 14, t: 14, b: 22 };
+      var cw = w - pad.l - pad.r;
+      var ch = h - pad.t - pad.b;
+
+      var minP = Infinity;
+      var maxP = -Infinity;
+      for (var i = 0; i < data.length; i++) {
+        if (data[i].low < minP) minP = data[i].low;
+        if (data[i].high > maxP) maxP = data[i].high;
+      }
+      var range = Math.max(maxP - minP, 1e-6);
+      minP -= range * 0.12;
+      maxP += range * 0.12;
+      range = maxP - minP;
+
+      function xAt(idx) { return pad.l + (idx / Math.max(data.length - 1, 1)) * cw; }
+      function yAt(price) { return pad.t + ((maxP - price) / range) * ch; }
+
+      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+      ctx.lineWidth = 1;
+      for (var g = 0; g <= 4; g++) {
+        var y = pad.t + (g / 4) * ch;
+        ctx.beginPath();
+        ctx.moveTo(pad.l, y);
+        ctx.lineTo(w - pad.r, y);
+        ctx.stroke();
+      }
+
+      var candleW = Math.max(cw / data.length * 0.58, 1);
+      for (var c = 0; c < data.length; c++) {
+        var d = data[c];
+        var x = xAt(c);
+        var yo = yAt(d.open);
+        var yc = yAt(d.close);
+        var yh = yAt(d.high);
+        var yl = yAt(d.low);
+        var up = d.close >= d.open;
+        ctx.strokeStyle = up ? '#28ca42' : '#ff4d6d';
+        ctx.fillStyle = up ? 'rgba(40,202,66,0.78)' : 'rgba(255,77,109,0.78)';
+        ctx.beginPath();
+        ctx.moveTo(x, yh);
+        ctx.lineTo(x, yl);
+        ctx.stroke();
+        var top = Math.min(yo, yc);
+        var bh = Math.max(Math.abs(yo - yc), 1);
+        ctx.fillRect(x - candleW / 2, top, candleW, bh);
+      }
+
+      ctx.fillStyle = 'rgba(255,255,255,0.72)';
+      ctx.font = '11px monospace';
+      ctx.fillText('Interactive demo preview', pad.l, h - 8);
+    }
+
+    fetch('data/btc5m.csv', { cache: 'no-store' })
+      .then(function (res) { return res.text(); })
+      .then(function (txt) {
+        var lines = txt.trim().split(/\r?\n/);
+        var out = [];
+        for (var i = 1; i < lines.length; i++) {
+          var p = lines[i].split(',');
+          if (p.length < 6) continue;
+          out.push({
+            open: Number(p[1]),
+            high: Number(p[2]),
+            low: Number(p[3]),
+            close: Number(p[4])
+          });
+        }
+        drawPreview(out);
+      })
+      .catch(function () {
+        ctx.fillStyle = 'rgba(255,255,255,0.6)';
+        ctx.font = '12px monospace';
+        ctx.fillText('Preview unavailable', 20, 40);
+      });
   }());
 
   // ============================================

@@ -2404,6 +2404,62 @@ body {
   padding-top: 2rem;
 }
 
+.job-showcase-section {
+  padding-top: 1.4rem;
+  padding-bottom: 0.4rem;
+}
+
+.job-showcase-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 1.25rem;
+  align-items: stretch;
+}
+
+.job-showcase-left,
+.job-showcase-right {
+  min-width: 0;
+}
+
+.job-showcase-title {
+  font-size: 1.45rem;
+}
+
+.job-showcase-bullets {
+  margin-top: 0.9rem;
+}
+
+.job-showcase-window {
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
+  background: rgba(1, 6, 16, 0.9);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.28);
+}
+
+.job-showcase-canvas-wrap {
+  padding: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+#btShowcaseCanvas {
+  width: 100%;
+  height: auto;
+  display: block;
+  background: rgba(1, 6, 16, 0.95);
+}
+
+.job-showcase-foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.6rem 0.85rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.58);
+}
+
 .bt-lab-card {
   background: linear-gradient(160deg, rgba(0, 212, 255, 0.06), rgba(8, 12, 24, 0.7));
   border: 1px solid rgba(0, 212, 255, 0.18);
@@ -2500,18 +2556,6 @@ body {
   padding: 0.4rem 0.55rem;
 }
 
-.bt-upload-btn {
-  cursor: pointer;
-}
-
-.bt-upload-input {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-  width: 1px;
-  height: 1px;
-}
-
 .bt-chart-wrap {
   margin-top: 1rem;
   background: rgba(1, 6, 16, 0.9);
@@ -2581,6 +2625,10 @@ body {
 }
 
 @media (max-width: 1100px) {
+  .job-showcase-wrap {
+    grid-template-columns: 1fr;
+  }
+
   .bt-control-grid {
     grid-template-columns: repeat(3, minmax(160px, 1fr));
   }
