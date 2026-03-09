@@ -283,6 +283,257 @@
   }());
 
   // ============================================
+  // HOME: WHAT WE DO CANVAS ANIMATIONS
+  // ============================================
+  (function () {
+    var candleCanvas = document.getElementById('candleCanvas');
+    var volCanvas = document.getElementById('volSurfaceCanvas');
+    if (!candleCanvas || !volCanvas) return;
+
+    var candleCtx = candleCanvas.getContext('2d');
+    var volCtx = volCanvas.getContext('2d');
+    var dpr = Math.max(1, Math.min(window.devicePixelRatio || 1, 2));
+
+    var series = [];
+    var len = 90;
+    var base = 100;
+    for (var i = 0; i < len; i++) {
+      var drift = Math.sin(i * 0.12) * 0.28 + Math.cos(i * 0.035) * 0.18;
+      var noise = (Math.random() - 0.5) * 0.42;
+      var open = base;
+      var close = open + drift + noise;
+      var high = Math.max(open, close) + Math.random() * 0.42;
+      var low = Math.min(open, close) - Math.random() * 0.42;
+      base = close;
+      series.push({ open: open, high: high, low: low, close: close });
+    }
+
+    function fitCanvas(canvas) {
+      var w = canvas.clientWidth || 640;
+      var h = canvas.clientHeight || 190;
+      canvas.width = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+      var ctx = canvas.getContext('2d');
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      return { w: w, h: h };
+    }
+
+    function drawGrid(ctx, w, h, pad) {
+      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+      ctx.lineWidth = 1;
+      for (var i = 0; i <= 6; i++) {
+        var y = pad.t + ((h - pad.t - pad.b) * i) / 6;
+        ctx.beginPath();
+        ctx.moveTo(pad.l, y);
+        ctx.lineTo(w - pad.r, y);
+        ctx.stroke();
+      }
+      for (var j = 0; j <= 8; j++) {
+        var x = pad.l + ((w - pad.l - pad.r) * j) / 8;
+        ctx.beginPath();
+        ctx.moveTo(x, pad.t);
+        ctx.lineTo(x, h - pad.b);
+        ctx.stroke();
+      }
+    }
+
+    function drawCandlePanel(t) {
+      var size = fitCanvas(candleCanvas);
+      var w = size.w;
+      var h = size.h;
+      var ctx = candleCtx;
+      ctx.clearRect(0, 0, w, h);
+
+      var bg = ctx.createLinearGradient(0, 0, 0, h);
+      bg.addColorStop(0, 'rgba(3,18,34,0.92)');
+      bg.addColorStop(1, 'rgba(2,9,20,0.98)');
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, w, h);
+
+      var pad = { l: 30, r: 14, t: 16, b: 20 };
+      drawGrid(ctx, w, h, pad);
+
+      // Advance synthetic feed to look live.
+      if (Math.random() < 0.22) {
+        var last = series[series.length - 1].close;
+        var signal = Math.sin((Date.now() * 0.0018) + t * 0.6) * 0.26;
+        var epsilon = (Math.random() - 0.5) * 0.34;
+        var nextClose = last + signal + epsilon;
+        series.push({
+          open: last,
+          high: Math.max(last, nextClose) + Math.random() * 0.38,
+          low: Math.min(last, nextClose) - Math.random() * 0.38,
+          close: nextClose
+        });
+        if (series.length > 110) series.shift();
+      }
+
+      var minP = Infinity;
+      var maxP = -Infinity;
+      for (var i = 0; i < series.length; i++) {
+        if (series[i].low < minP) minP = series[i].low;
+        if (series[i].high > maxP) maxP = series[i].high;
+      }
+      var range = Math.max(maxP - minP, 1e-6);
+      minP -= range * 0.1;
+      maxP += range * 0.1;
+      range = maxP - minP;
+
+      function xAt(idx) {
+        return pad.l + (idx / Math.max(series.length - 1, 1)) * (w - pad.l - pad.r);
+      }
+      function yAt(price) {
+        return pad.t + ((maxP - price) / range) * (h - pad.t - pad.b);
+      }
+
+      var candleW = Math.max(((w - pad.l - pad.r) / series.length) * 0.6, 1.2);
+      for (var c = 0; c < series.length; c++) {
+        var d = series[c];
+        var x = xAt(c);
+        var yo = yAt(d.open);
+        var yc = yAt(d.close);
+        var yh = yAt(d.high);
+        var yl = yAt(d.low);
+        var up = d.close >= d.open;
+        ctx.strokeStyle = up ? 'rgba(40,202,66,0.94)' : 'rgba(255,77,109,0.94)';
+        ctx.fillStyle = up ? 'rgba(40,202,66,0.76)' : 'rgba(255,77,109,0.76)';
+        ctx.beginPath();
+        ctx.moveTo(x, yh);
+        ctx.lineTo(x, yl);
+        ctx.stroke();
+        var top = Math.min(yo, yc);
+        var bh = Math.max(Math.abs(yo - yc), 1);
+        ctx.fillRect(x - candleW / 2, top, candleW, bh);
+      }
+
+      // Swing-point circles and model line to mimic quant annotation overlays.
+      ctx.strokeStyle = 'rgba(0,212,255,0.7)';
+      ctx.lineWidth = 1.1;
+      ctx.beginPath();
+      for (var p = 6; p < series.length; p += 10) {
+        var px = xAt(p);
+        var py = yAt(series[p].close + Math.sin(t * 1.4 + p * 0.25) * 0.35);
+        if (p === 6) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+      }
+      ctx.stroke();
+      for (var q = 8; q < series.length; q += 12) {
+        var qx = xAt(q);
+        var qy = yAt(series[q].close);
+        ctx.strokeStyle = 'rgba(255,77,109,0.9)';
+        ctx.beginPath();
+        ctx.arc(qx, qy, 4.4, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+
+      var lastClose = series[series.length - 1].close;
+      var ly = yAt(lastClose);
+      ctx.setLineDash([4, 5]);
+      ctx.strokeStyle = 'rgba(229,231,235,0.7)';
+      ctx.beginPath();
+      ctx.moveTo(pad.l, ly);
+      ctx.lineTo(w - pad.r, ly);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.fillStyle = 'rgba(0,255,245,0.9)';
+      ctx.font = '10px monospace';
+      ctx.fillText('SMC-LIVE  f(x)=arg max P(r|X)', pad.l, h - 6);
+    }
+
+    function drawVolPanel(t) {
+      var size = fitCanvas(volCanvas);
+      var w = size.w;
+      var h = size.h;
+      var ctx = volCtx;
+      ctx.clearRect(0, 0, w, h);
+
+      var bg = ctx.createLinearGradient(0, 0, 0, h);
+      bg.addColorStop(0, 'rgba(6,14,36,0.94)');
+      bg.addColorStop(1, 'rgba(2,8,18,0.98)');
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, w, h);
+
+      var cx = w * 0.5;
+      var cy = h * 0.63;
+      var sx = Math.min(w * 0.43, 240);
+      var sy = Math.min(h * 0.3, 85);
+
+      // Draw 3D-like sigma surface mesh (projected) with animated wave.
+      var nx = 19;
+      var ny = 15;
+      function proj(ix, iy) {
+        var u = ix / (nx - 1);
+        var v = iy / (ny - 1);
+        var x = (u - 0.5) * 2;
+        var y = (v - 0.5) * 2;
+        var z = 0.38 * Math.sin(2.8 * x + t * 1.7) * Math.cos(2.2 * y - t * 1.2)
+          + 0.18 * Math.exp(-(x * x * 2.2 + y * y * 1.6));
+        var px = cx + x * sx + y * sx * 0.22;
+        var py = cy + y * sy - z * 78;
+        return { x: px, y: py, z: z };
+      }
+
+      for (var row = 0; row < ny; row++) {
+        ctx.beginPath();
+        for (var col = 0; col < nx; col++) {
+          var p = proj(col, row);
+          if (col === 0) ctx.moveTo(p.x, p.y);
+          else ctx.lineTo(p.x, p.y);
+        }
+        ctx.strokeStyle = 'rgba(0,212,255,0.42)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+      for (var col2 = 0; col2 < nx; col2++) {
+        ctx.beginPath();
+        for (var row2 = 0; row2 < ny; row2++) {
+          var p2 = proj(col2, row2);
+          if (row2 === 0) ctx.moveTo(p2.x, p2.y);
+          else ctx.lineTo(p2.x, p2.y);
+        }
+        ctx.strokeStyle = 'rgba(167,139,250,0.28)';
+        ctx.stroke();
+      }
+
+      // Contour markers
+      for (var m = 0; m < 8; m++) {
+        var iu = 2 + (m * 2) % (nx - 3);
+        var iv = 2 + (m * 3) % (ny - 3);
+        var pm = proj(iu, iv);
+        ctx.strokeStyle = 'rgba(255,77,109,0.9)';
+        ctx.beginPath();
+        ctx.arc(pm.x, pm.y, 4 + Math.sin(t * 3 + m) * 0.8, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+
+      ctx.fillStyle = 'rgba(229,231,235,0.9)';
+      ctx.font = '10px monospace';
+      ctx.fillText('sigma(K,T)  =  a + b log(K/F) + cT + epsilon', 18, 18);
+      ctx.fillStyle = 'rgba(0,255,245,0.85)';
+      ctx.fillText('VOL-SURF update: t = ' + (t * 12).toFixed(1) + ' ms', 18, h - 8);
+    }
+
+    var raf = 0;
+    var start = 0;
+    function tick(ts) {
+      if (!start) start = ts;
+      var t = (ts - start) * 0.001;
+      drawCandlePanel(t);
+      drawVolPanel(t);
+      raf = window.requestAnimationFrame(tick);
+    }
+
+    function onResize() {
+      drawCandlePanel(0);
+      drawVolPanel(0);
+    }
+
+    window.addEventListener('resize', onResize);
+    raf = window.requestAnimationFrame(tick);
+  }());
+
+  // ============================================
   // TOOLS: PUBLIC BACKTEST LAB (tools.html)
   // ============================================
   (function () {
@@ -328,6 +579,7 @@
     var playbackIndex = 0;
     var running = false;
     var rafId = null;
+    var skipInProgress = false;
     var feeRate = 0.0004;
 
     var state = {
@@ -756,15 +1008,51 @@
     }
 
     function skipToEnd() {
-      if (!data.length) return;
-      pauseBacktest();
-      while (playbackIndex < data.length - 1) {
-        playbackIndex++;
-        processCandle(playbackIndex);
+      if (skipInProgress) return;
+      if (!rawData.length) {
+        if (liveStatus) liveStatus.textContent = 'Data is still loading...';
+        return;
       }
-      if (state.position) closePosition(playbackIndex, 'end');
-      drawChart();
-      updateReport(true);
+
+      if (!data.length) {
+        buildDataFromSettings();
+      }
+
+      if (data.length < 2) {
+        if (liveStatus) liveStatus.textContent = 'Not enough candles for current filter';
+        return;
+      }
+
+      // If already at end, restart with current settings then skip again.
+      if (playbackIndex >= data.length - 1) {
+        buildDataFromSettings();
+      }
+
+      pauseBacktest();
+      skipInProgress = true;
+      if (liveStatus) liveStatus.textContent = 'Skipping to end...';
+
+      var chunkSize = 5000;
+      function stepSkip() {
+        var stopAt = Math.min(playbackIndex + chunkSize, data.length - 1);
+        while (playbackIndex < stopAt) {
+          playbackIndex++;
+          processCandle(playbackIndex);
+        }
+
+        drawChart();
+
+        if (playbackIndex >= data.length - 1) {
+          if (state.position) closePosition(playbackIndex, 'end');
+          updateReport(true);
+          skipInProgress = false;
+          return;
+        }
+
+        setTimeout(stepSkip, 0);
+      }
+
+      setTimeout(stepSkip, 0);
     }
 
     function parseCsvText(text) {
@@ -855,6 +1143,21 @@
     if (!canvas) return;
     var ctx = canvas.getContext('2d');
 
+    function drawPreviewMessage(text, color) {
+      var w = canvas.width;
+      var h = canvas.height;
+      ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = 'rgba(1, 6, 16, 0.95)';
+      ctx.fillRect(0, 0, w, h);
+      ctx.fillStyle = color || 'rgba(255,255,255,0.75)';
+      ctx.font = '13px monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(text, w / 2, h / 2);
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'alphabetic';
+    }
+
     function drawPreview(rows) {
       var data = rows.slice(-120);
       if (!data.length) return;
@@ -917,14 +1220,14 @@
 
     var previewSources = [
       'data/btc5m.csv',
+      'victoria-quant-lab/data/btc5m.csv',
+      'https://raw.githubusercontent.com/alvinm30/victoria/main/victoria-quant-lab/data/btc5m.csv',
       'https://raw.githubusercontent.com/alvinm30/victoria/main/data/btc5m.csv'
     ];
 
     function loadPreview(idx) {
       if (idx >= previewSources.length) {
-        ctx.fillStyle = 'rgba(255,255,255,0.6)';
-        ctx.font = '12px monospace';
-        ctx.fillText('Preview unavailable', 20, 40);
+        drawPreviewMessage('Preview unavailable: CSV source not found', 'rgba(255,255,255,0.6)');
         return;
       }
       fetch(previewSources[idx], { cache: 'no-store' })
@@ -938,12 +1241,21 @@
           for (var i = 1; i < lines.length; i++) {
             var p = lines[i].split(',');
             if (p.length < 6) continue;
+            var open = Number(p[1]);
+            var high = Number(p[2]);
+            var low = Number(p[3]);
+            var close = Number(p[4]);
+            if (!isFinite(open) || !isFinite(high) || !isFinite(low) || !isFinite(close)) continue;
             out.push({
-              open: Number(p[1]),
-              high: Number(p[2]),
-              low: Number(p[3]),
-              close: Number(p[4])
+              open: open,
+              high: high,
+              low: low,
+              close: close
             });
+          }
+          if (!out.length) {
+            drawPreviewMessage('Preview unavailable: invalid CSV format', 'rgba(255,255,255,0.6)');
+            return;
           }
           drawPreview(out);
         })
@@ -952,29 +1264,102 @@
         });
     }
 
+    drawPreviewMessage('Loading preview...', 'rgba(0,212,255,0.9)');
     loadPreview(0);
   }());
 
   // ============================================
-  // CONTACT FORM (contact.html)
+  // MAILBOX FORMS (contact.html + indicator-smc.html)
   // ============================================
-  var contactForm = document.querySelector('.contact-form');
-  if (contactForm) {
-    contactForm.addEventListener('submit', function (e) {
+  function openGmailCompose(to, subject, body) {
+    var gmailUrl = 'https://mail.google.com/mail/?view=cm&fs=1'
+      + '&to=' + encodeURIComponent(to)
+      + '&su=' + encodeURIComponent(subject)
+      + '&body=' + encodeURIComponent(body);
+
+    var popup = window.open(gmailUrl, '_blank', 'noopener');
+    if (popup) return true;
+
+    // Fallback when popup is blocked.
+    var mailtoUrl = 'mailto:' + encodeURIComponent(to)
+      + '?subject=' + encodeURIComponent(subject)
+      + '&body=' + encodeURIComponent(body);
+    window.location.href = mailtoUrl;
+    return false;
+  }
+
+  function wireMailboxForm(formId, config) {
+    var form = document.getElementById(formId);
+    if (!form) return;
+
+    function val(selector) {
+      if (!selector) return '';
+      var el = form.querySelector(selector);
+      return el ? el.value : '';
+    }
+
+    form.addEventListener('submit', function (e) {
       e.preventDefault();
-      var btn = contactForm.querySelector('[type="submit"]');
+
+      var name = val(config.nameSelector);
+      var email = val(config.emailSelector);
+      var type = val(config.typeSelector);
+      var message = val(config.messageSelector);
+
+      var subject = config.subjectPrefix + (type ? ' [' + type + ']' : '');
+      var bodyLines = [
+        'Name: ' + (name || 'N/A'),
+        'Email: ' + (email || 'N/A')
+      ];
+      if (type) bodyLines.push('Type: ' + type);
+      bodyLines.push('Page: ' + config.pageTag);
+      bodyLines.push('');
+      bodyLines.push('Message:');
+      bodyLines.push(message || 'N/A');
+
+      var ok = openGmailCompose(config.toEmail, subject, bodyLines.join('\n'));
+
+      var btn = form.querySelector('[type="submit"]');
       if (btn) {
         var original = btn.textContent;
-        btn.textContent = 'Sent ✓';
+        btn.textContent = ok ? 'Gmail Opened ✓' : 'Email App Opened ✓';
         btn.disabled = true;
         setTimeout(function () {
           btn.textContent = original;
           btn.disabled = false;
-          contactForm.reset();
-        }, 3000);
+        }, 2200);
+      }
+
+      if (config.confirmationId) {
+        var confirmEl = document.getElementById(config.confirmationId);
+        if (confirmEl) {
+          confirmEl.style.display = 'block';
+          confirmEl.className = 'no-comments-msg';
+          confirmEl.textContent = '> Gmail compose opened with prefilled message. Please send manually.';
+        }
       }
     });
   }
+
+  wireMailboxForm('contact-form', {
+    toEmail: 'alvin_prestige_co@gmail.com',
+    subjectPrefix: 'Contact Message — Victoria Quant Lab',
+    pageTag: 'contact',
+    nameSelector: '#name',
+    emailSelector: '#email',
+    messageSelector: '#message',
+    confirmationId: 'form-confirmation'
+  });
+
+  wireMailboxForm('smc-mailbox-form', {
+    toEmail: 'alvin_prestige_co@gmail.com',
+    subjectPrefix: 'SMC Mailbox Message — Victoria Quant Lab',
+    pageTag: 'indicator-smc',
+    nameSelector: '#c-name',
+    emailSelector: '#c-email',
+    typeSelector: '#c-type',
+    messageSelector: '#c-msg'
+  });
 
 })();
 

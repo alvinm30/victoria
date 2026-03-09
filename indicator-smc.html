@@ -266,43 +266,42 @@ indicator("Victoria SMC Concept Indicator", overlay=true, max_boxes_count=500, m
       </div>
     </section>
 
-    <!-- Comments & Ideas -->
+    <!-- Send Message To Us -->
     <section class="section comment-section">
       <div class="container">
 
         <div class="section-header">
-          <div class="section-tag">// COMMUNITY</div>
-          <h2 class="section-title">Comments &amp; Ideas</h2>
+          <div class="section-tag">// MAILBOX</div>
+          <h2 class="section-title">Send Comment To Us</h2>
           <div class="section-line"></div>
-          <p class="section-desc">Leave a comment, suggest an improvement, or share a trade idea using this indicator.</p>
+          <p class="section-desc">Send your feedback privately. We will open Gmail with your message prefilled so you can review and send manually.</p>
         </div>
 
-        <!-- Existing Comments -->
-        <div class="comment-list" style="max-width: 900px;">
-          <p class="no-comments-msg">&gt; No comments yet. Be the first to share an idea or feedback.</p>
-        </div>
-
-        <!-- Comment Form -->
+        <!-- Mailbox Form -->
         <div class="terminal-panel" style="max-width: 900px;">
           <div class="terminal-header">
             <span class="terminal-dot red"></span>
             <span class="terminal-dot yellow"></span>
             <span class="terminal-dot green"></span>
-            <span class="terminal-title">submit-comment.sh</span>
+            <span class="terminal-title">send-mailbox-message.sh</span>
           </div>
           <div class="terminal-body">
             <div class="terminal-line" style="margin-bottom: 1.5rem;">
               <span class="terminal-prompt">&gt; </span>
-              <span class="terminal-command">post_comment()</span>
+              <span class="terminal-command">open_gmail_compose()</span>
             </div>
-            <!-- Replace YOUR_FORM_ID with your Formspree form ID at formspree.io -->
-            <form action="https://formspree.io/f/xlgpgprp" method="POST">
+            <form id="smc-mailbox-form">
               <input type="hidden" name="_subject" value="SMC Indicator Comment — Victoria Quant Lab" />
               <input type="hidden" name="page" value="indicator-smc" />
 
               <div class="form-group">
                 <label class="form-label" for="c-name">&#9655; Name / Handle</label>
                 <input type="text" id="c-name" name="name" class="form-input" placeholder="Your name or anonymous handle..." required />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="c-email">&#9655; Email (Optional)</label>
+                <input type="email" id="c-email" name="email" class="form-input" placeholder="your@email.com" autocomplete="email" />
               </div>
 
               <div class="form-group">
@@ -321,8 +320,9 @@ indicator("Victoria SMC Concept Indicator", overlay=true, max_boxes_count=500, m
                 <textarea id="c-msg" name="message" class="form-textarea" placeholder="Share your comment, idea, or suggestion..." required></textarea>
               </div>
 
-              <button type="submit" class="btn btn-primary">&#9655; Submit</button>
+              <button type="submit" class="btn btn-primary">&#9655; Open Gmail Draft</button>
             </form>
+            <p class="no-comments-msg" style="margin-top:0.85rem;">&gt; Opens Gmail with your message prefilled. You send it manually.</p>
           </div>
         </div>
 

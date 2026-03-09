@@ -94,12 +94,20 @@
               <i class="fa-solid fa-chart-bar"></i> PRICE ACTION — SMC LIVE
             </div>
             <canvas id="candleCanvas" class="wwd-canvas"></canvas>
+            <div class="wwd-canvas-meta">
+              <span>STRUCTURE: BOS / CHOCH</span>
+              <span>MODEL: E[Rt | Xt]</span>
+            </div>
           </div>
           <div class="wwd-canvas-wrap">
             <div class="wwd-canvas-label">
               <i class="fa-solid fa-mountain"></i> VOLATILITY SURFACE &sigma;(K,T)
             </div>
             <canvas id="volSurfaceCanvas" class="wwd-canvas"></canvas>
+            <div class="wwd-canvas-meta">
+              <span>FIT: &sigma;(K,T) = a + b log(K/F) + cT</span>
+              <span>TERM: DYNAMIC SMILE</span>
+            </div>
           </div>
         </div>
 
