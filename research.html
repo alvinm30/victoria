@@ -40,8 +40,8 @@
       <h1 class="section-title">Research</h1>
       <div class="section-line"></div>
       <p class="section-desc">
-        Quantitative analysis across multiple strategy domains: commodity macro,
-        statistical arbitrage, CTA trend-following, and systematic quant research.
+        Quantitative analysis across multiple strategy domains: crypto systematic
+        trading, statistical arbitrage, CTA trend-following, and model-driven research.
       </p>
     </section>
 
@@ -52,9 +52,9 @@
           <i class="fa-solid fa-border-all"></i> All
           <span class="pg-tab-count" id="rcount-all">3</span>
         </button>
-        <button class="pg-tab" data-tab="commodities">
-          <i class="fa-solid fa-oil-well"></i> Commodities
-          <span class="pg-tab-count" id="rcount-commodities">1</span>
+        <button class="pg-tab" data-tab="quant-analysis">
+          <i class="fa-solid fa-chart-line"></i> Quant Analysis
+          <span class="pg-tab-count" id="rcount-quant-analysis">1</span>
         </button>
         <button class="pg-tab" data-tab="stat-arb">
           <i class="fa-solid fa-arrows-left-right"></i> Stat Arb
@@ -83,25 +83,24 @@
       <div class="container">
         <div class="pg-research-list" id="researchGrid">
 
-          <!-- OIL MARKET NOTE -->
-          <div class="pg-research-card" data-category="commodities" data-title="Oil Market Analysis">
+          <!-- QUANT ANALYSIS RESEARCH -->
+          <div class="pg-research-card" data-category="quant-analysis" data-title="Volatility-Based Position Sizing in EMA Crossover Strategies">
             <div class="pg-rc-header">
               <div class="pg-rc-meta">
-                <span class="pg-tag pg-tag--commodity">COMMODITIES</span>
+                <span class="pg-tag pg-tag--strategy">QUANT ANALYSIS</span>
                 <span class="pg-rc-date">2026.03</span>
               </div>
               <button class="pg-rc-toggle" aria-expanded="false" aria-label="Expand">
                 <i class="fa-solid fa-chevron-down"></i>
               </button>
             </div>
-            <h3 class="pg-rc-title">Oil Market Analysis</h3>
+            <h3 class="pg-rc-title">Volatility-Based Position Sizing in EMA Crossover Strategies</h3>
             <p class="pg-rc-summary">
-              WTI / Brent macro outlook — supply &amp; demand dynamics, geopolitical risk
-              premium, OPEC+ constraints, and key technical price levels.
+              Empirical BTC study across 5m, 15m, and 1h data comparing fixed sizing,
+              Rolling, EWMA, GARCH, EGARCH, and GJR volatility models under EMA(12/26).
             </p>
             <div class="pg-rc-actions">
-              <a href="research-oil.html" class="btn btn-primary">Read Full Note</a>
-              <a href="research/oil-market-note.pdf" class="btn btn-secondary" download>&#8659; PDF</a>
+              <a href="research-ema-volatility.html" class="btn btn-primary">Read Full Note</a>
             </div>
             <div class="pg-rc-body" hidden>
               <div class="terminal-panel" style="margin-top:1.5rem;">
@@ -109,21 +108,24 @@
                   <span class="terminal-dot red"></span>
                   <span class="terminal-dot yellow"></span>
                   <span class="terminal-dot green"></span>
-                  <span class="terminal-title">oil-market-note.md</span>
+                  <span class="terminal-title">ema-volatility-btc.md</span>
                 </div>
                 <div class="terminal-body">
-                  <h4 class="terminal-section-h4">// OVERVIEW</h4>
-                  <p>[ Coming soon — add your overview here ]</p>
-                  <h4 class="terminal-section-h4">// SUPPLY &amp; DEMAND DYNAMICS</h4>
-                  <p>[ Coming soon — add your supply &amp; demand analysis here ]</p>
-                  <h4 class="terminal-section-h4">// GEOPOLITICAL FACTORS</h4>
-                  <p>[ Coming soon — add your geopolitical factor analysis here ]</p>
-                  <h4 class="terminal-section-h4">// TECHNICAL PRICE OUTLOOK</h4>
-                  <p>[ Coming soon — add your technical price outlook here ]</p>
-                  <h4 class="terminal-section-h4">// KEY LEVELS &amp; TRADE IDEAS</h4>
-                  <p>[ Coming soon — add your key levels and trade ideas here ]</p>
-                  <h4 class="terminal-section-h4">// CONCLUSION</h4>
-                  <p>[ Coming soon — add your conclusion here ]</p>
+                  <h4 class="terminal-section-h4">// ABSTRACT</h4>
+                  <p>
+                    Volatility-based sizing improves risk-adjusted outcomes in out-of-sample
+                    BTC tests, with GJR strongest on 5m and EWMA strongest on 1h.
+                  </p>
+                  <h4 class="terminal-section-h4">// DATA &amp; METHOD</h4>
+                  <p>
+                    646,291 5m BTC bars, 70/30 split, EMA(12/26) long-only signal,
+                    inverse-volatility position scaling, and six volatility methods.
+                  </p>
+                  <h4 class="terminal-section-h4">// KEY RESULT</h4>
+                  <p>
+                    In flatter out-of-sample regimes the strategy outperformed buy-and-hold
+                    modestly while reducing drawdown under several volatility models.
+                  </p>
                 </div>
               </div>
             </div>

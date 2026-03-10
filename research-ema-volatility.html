@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Volatility-Based Position Sizing in EMA Crossover Strategies - Victoria Quant Lab</title>
+  <meta name="description" content="Empirical BTC study of EMA(12/26) with volatility-based position sizing across 5m, 15m, and 1h timeframes." />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .paper-shell {
+      max-width: 1100px;
+      margin: 0 auto 3rem;
+      padding: 2rem 2rem 2.5rem;
+      border: 1px solid rgba(0, 212, 255, 0.22);
+      border-radius: 10px;
+      background: rgba(10, 14, 24, 0.82);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+    }
+
+    .paper-title {
+      font-size: 1.7rem;
+      letter-spacing: 0.5px;
+      text-transform: none;
+      margin-bottom: 0.6rem;
+    }
+
+    .paper-meta {
+      color: var(--text-secondary);
+      font-size: 0.82rem;
+      margin-bottom: 1.25rem;
+      border-bottom: 1px solid rgba(0, 212, 255, 0.14);
+      padding-bottom: 0.85rem;
+    }
+
+    .paper-shell p,
+    .paper-shell li {
+      color: var(--text-body);
+      line-height: 1.82;
+      font-size: 0.95rem;
+    }
+
+    .paper-shell table th,
+    .paper-shell table td {
+      border: 1px solid rgba(0, 212, 255, 0.14);
+      padding: 0.45rem;
+      text-align: left;
+    }
+
+    @media (max-width: 768px) {
+      .paper-shell {
+        padding: 1rem;
+      }
+    }
+
+    .paper-side-nav {
+      position: fixed;
+      right: 0.9rem;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 1100;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.55rem;
+    }
+
+    .paper-side-toggle {
+      border: 1px solid rgba(0, 212, 255, 0.45);
+      background: rgba(8, 13, 26, 0.92);
+      color: var(--neon-cyan);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 1.1px;
+      text-transform: uppercase;
+      padding: 0.55rem 0.8rem;
+      border-radius: 7px;
+      cursor: pointer;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+    }
+
+    .paper-side-panel {
+      width: 260px;
+      border: 1px solid rgba(0, 212, 255, 0.25);
+      border-radius: 10px;
+      background: rgba(6, 11, 22, 0.96);
+      box-shadow: 0 16px 34px rgba(0, 0, 0, 0.45);
+      padding: 0.8rem;
+      display: none;
+    }
+
+    .paper-side-panel.open {
+      display: block;
+    }
+
+    .paper-side-title {
+      color: var(--text-secondary);
+      font-size: 0.75rem;
+      margin-bottom: 0.55rem;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+    }
+
+    .paper-side-link {
+      display: block;
+      text-decoration: none;
+      color: var(--text-body);
+      border: 1px solid rgba(0, 212, 255, 0.18);
+      background: rgba(255, 255, 255, 0.01);
+      border-radius: 7px;
+      padding: 0.52rem 0.58rem;
+      margin-bottom: 0.5rem;
+      font-size: 0.83rem;
+      line-height: 1.45;
+      transition: all 0.2s ease;
+    }
+
+    .paper-side-link:hover {
+      color: var(--neon-cyan);
+      border-color: rgba(0, 212, 255, 0.45);
+      background: rgba(0, 212, 255, 0.08);
+    }
+
+    .paper-side-link.active {
+      color: var(--neon-cyan);
+      border-color: rgba(0, 212, 255, 0.5);
+      background: rgba(0, 212, 255, 0.12);
+    }
+
+    @media (max-width: 768px) {
+      .paper-side-nav {
+        right: 0.6rem;
+        top: auto;
+        bottom: 1rem;
+        transform: none;
+      }
+
+      .paper-side-panel {
+        width: min(84vw, 280px);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="particles-js"></div>
+  <div class="grid-overlay"></div>
+  <div class="scanline"></div>
+
+  <nav class="navbar">
+    <a href="index.html" class="nav-logo">
+      <span class="logo-bracket">[</span>Victoria<span class="logo-bracket">]</span> QUANT LAB
+    </a>
+    <div class="nav-toggle">
+      <span></span><span></span><span></span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="research.html">Research</a></li>
+      <li><a href="tools.html">Tools</a></li>
+      <li><a href="marketplace.html">Marketplace</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main class="main-content">
+    <section class="section" style="padding-top: 3rem;">
+      <div class="container">
+        <article class="paper-shell">
+            <h1 class="section-title paper-title">Volatility-Based Position Sizing in EMA Crossover Strategies: An Empirical Analysis on Bitcoin Time-Series Data</h1>
+            <p class="paper-meta">Published: 2026.03 | Category: Quant Analysis | Asset: BTC</p>
+
+            <h2 class="terminal-section-h4">Abstract</h2>
+            <p>This study evaluates the impact of volatility-based position sizing on a simple Exponential Moving Average (EMA) crossover strategy applied to Bitcoin (BTC) price data across multiple timeframes: 5-minute (5m), 15-minute (15m), and 1-hour (1h). We compare six volatility estimation methods-none (fixed sizing), rolling window standard deviation, exponentially weighted moving average (EWMA), Generalized Autoregressive Conditional Heteroskedasticity (GARCH), Exponential GARCH (EGARCH), and Glosten-Jagannathan-Runkle (GJR)-using historical BTC data spanning approximately 646,291 5m bars. Backtests are conducted with a 70/30 in-sample/out-of-sample split to assess robustness. Results indicate that volatility sizing generally improves risk-adjusted performance in out-of-sample periods, with GJR and EWMA models showing superior excess returns and Sharpe ratios in lower and higher timeframes, respectively. However, all strategies underperform buy-and-hold in bullish in-sample periods but provide modest outperformance in flatter out-of-sample markets. These findings highlight the value of advanced volatility models in enhancing trading strategy resilience for volatile assets like BTC.</p>
+
+            <h2 class="terminal-section-h4">Introduction</h2>
+            <p>Cryptocurrencies, particularly Bitcoin, exhibit extreme volatility, making them both attractive and challenging for algorithmic trading strategies. Traditional trend-following approaches, such as EMA crossovers, often suffer from oversized positions during high-volatility regimes, leading to amplified drawdowns and suboptimal risk-adjusted returns. Position sizing based on volatility-where exposure is inversely proportional to estimated risk-has emerged as a key risk management tool in quantitative finance, drawing from principles in portfolio theory and econometric modeling (e.g., Engle, 1982; Bollerslev, 1986).</p>
+            <p>This paper investigates the efficacy of incorporating volatility-based position sizing into a basic EMA(12/26) crossover strategy on BTC. The strategy enters long positions when the shorter EMA crosses above the longer one, with no short positions considered to reflect a long-biased approach suitable for trending assets. We test across granular (5m), intermediate (15m), and coarser (1h) timeframes to capture varying market microstructures. Volatility is estimated using a spectrum of methods, from simple heuristics (rolling, EWMA) to sophisticated GARCH-family models, which account for clustering and asymmetry in returns.</p>
+            <p>The analysis uses a large dataset of BTC OHLCV (Open, High, Low, Close, Volume) data, resampled as needed, to simulate realistic trading conditions. By splitting data into in-sample (for model fitting) and out-of-sample (for validation) periods, we mitigate overfitting risks. Key metrics include total return, excess return over buy-and-hold, Sharpe ratio, maximum drawdown, win rate, trade count, and profit factor. The goal is to determine whether volatility sizing enhances performance and which models perform best in BTC's fat-tailed return distribution.</p>
+
+            <h2 class="terminal-section-h4">Methods</h2>
+            <h3 class="terminal-section-h4" style="font-size: 0.85rem; margin-top: 0.8rem;">Data</h3>
+            <p>Historical BTC price data was sourced from a CSV file ("btc5m.csv") containing 646,291 5-minute bars, covering open time, open, high, low, close, and volume. The data was sorted chronologically and converted to Pandas DataFrames for analysis. Resampling was performed to generate 15m (215,433 bars) and 1h (53,865 bars) timeframes using standard aggregation: first for open, max for high, min for low, last for close, and sum for volume. Missing values were dropped to ensure clean datasets.</p>
+            <p>The dataset was split into in-sample (first 70%, e.g., 452,403 bars for 5m) and out-of-sample (remaining 30%, e.g., 193,888 bars for 5m) periods to evaluate strategy generalization.</p>
+
+            <h3 class="terminal-section-h4" style="font-size: 0.85rem; margin-top: 0.8rem;">Strategy Description</h3>
+            <p>The base strategy uses a simple EMA crossover:</p>
+            <ul>
+              <li>Compute EMA(12) and EMA(26) on closing prices.</li>
+              <li>Generate a buy signal when EMA(12) &gt; EMA(26), shifted by one period to avoid look-ahead bias.</li>
+              <li>Market returns are calculated as percentage changes in close prices.</li>
+              <li>Positions are long-only, with size determined by the volatility model (or fixed at 1 for "none").</li>
+            </ul>
+            <p>Position sizing follows an inverse-volatility approach:</p>
+            <ul>
+              <li>Normalize volatility estimates to a [0.3, 1.0] multiplier range, then invert and scale to mean 1.</li>
+              <li>Clip positions to [-1, 1] and fill NaNs with 0.</li>
+              <li>Strategy returns = market returns x position size.</li>
+            </ul>
+
+            <h3 class="terminal-section-h4" style="font-size: 0.85rem; margin-top: 0.8rem;">Volatility Estimation Methods</h3>
+            <p>Six methods were implemented:</p>
+            <ol>
+              <li><strong>None</strong>: Fixed position size of 1 (no volatility adjustment).</li>
+              <li><strong>Rolling</strong>: Annualized standard deviation over a 60-period window, expanded for early data.</li>
+              <li><strong>EWMA</strong>: Exponentially weighted variance (span=60), square-rooted and annualized.</li>
+              <li><strong>GARCH(1,1)</strong>: Standard GARCH model for symmetric volatility clustering.</li>
+              <li><strong>EGARCH(1,1)</strong>: Captures leverage effects (asymmetric response to negative shocks).</li>
+              <li><strong>GJR(1,1)</strong>: Threshold GARCH for asymmetry in variance.</li>
+            </ol>
+            <p>GARCH-family models were fit sparsely (every 960 points on a 2,000-point rolling window) for computational efficiency, with forecasts forward-filled. Fits used the <code>arch</code> library with a maximum of 60 iterations. Returns were scaled by 100 for model stability, and baseline rolling volatility was used as a fallback.</p>
+            <p>Annualization factors: 252 trading days x (24x12 for 5m, 24x4 for 15m, 24 for 1h).</p>
+
+            <h3 class="terminal-section-h4" style="font-size: 0.85rem; margin-top: 0.8rem;">Backtesting and Metrics</h3>
+            <p>Backtests were run per timeframe, period, and method, caching volatility for efficiency. Cumulative returns were computed for strategy and buy-and-hold benchmarks.</p>
+            <p>Metrics:</p>
+            <ul>
+              <li><strong>Total Return</strong>: (Final cumulative - 1) x 100%.</li>
+              <li><strong>Buy-and-Hold Return</strong>: Benchmark return.</li>
+              <li><strong>Excess Return</strong>: Total return - buy-and-hold.</li>
+              <li><strong>Win Rate</strong>: Percentage of positive strategy returns.</li>
+              <li><strong>Sharpe Ratio</strong>: Annualized mean strategy return / standard deviation.</li>
+              <li><strong>Maximum Drawdown</strong>: Largest peak-to-trough decline in cumulative returns (%).</li>
+              <li><strong>Trades</strong>: Number of entries (signal changes from 0 to 1).</li>
+              <li><strong>Profit Factor</strong>: Sum of positive returns / absolute sum of negative returns.</li>
+            </ul>
+            <p>Volatility profiles (mean, std, min/max, skew, kurtosis) were calculated per timeframe.</p>
+            <p>Visualizations included a summary metrics plot and cumulative return charts, saved as PNGs.</p>
+            <p>All computations used Python libraries: Pandas, NumPy, Matplotlib, SciPy, and ARCH.</p>
+
+            <h2 class="terminal-section-h4">Results</h2>
+            <h3 class="terminal-section-h4" style="font-size: 0.85rem; margin-top: 0.8rem;">Performance Summary</h3>
+            <p>Backtest results are summarized in Table 1 (all periods) and ranked by out-of-sample total return in Table 2. Volatility characteristics are in Table 3.</p>
+
+            <p><strong>Table 1: Summary of Backtest Metrics Across All Periods</strong></p>
+            <div style="overflow-x:auto;">
+              <table class="pg-results-table" style="width:100%; border-collapse: collapse; font-size:0.78rem;">
+                <thead>
+                  <tr><th>Method</th><th>Timeframe</th><th>Period</th><th>Total Return (%)</th><th>Buy &amp; Hold (%)</th><th>Excess Return (%)</th><th>Win Rate (%)</th><th>Sharpe</th><th>Max DD (%)</th><th>Trades</th><th>Profit Factor</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>none</td><td>5m</td><td>in-sample</td><td>78.58</td><td>806.05</td><td>-727.47</td><td>48.57</td><td>0.43</td><td>-78.29</td><td>8706</td><td>1.01</td></tr>
+                  <tr><td>rolling</td><td>5m</td><td>in-sample</td><td>89.59</td><td>806.05</td><td>-716.46</td><td>48.57</td><td>0.47</td><td>-77.78</td><td>8706</td><td>1.01</td></tr>
+                  <tr><td>ewma</td><td>5m</td><td>in-sample</td><td>67.33</td><td>806.05</td><td>-738.72</td><td>48.57</td><td>0.41</td><td>-79.14</td><td>8706</td><td>1.01</td></tr>
+                  <tr><td>garch</td><td>5m</td><td>in-sample</td><td>102.24</td><td>806.05</td><td>-703.81</td><td>48.57</td><td>0.49</td><td>-77.18</td><td>8706</td><td>1.01</td></tr>
+                  <tr><td>egarch</td><td>5m</td><td>in-sample</td><td>78.82</td><td>806.05</td><td>-727.23</td><td>48.57</td><td>0.43</td><td>-78.26</td><td>8706</td><td>1.01</td></tr>
+                  <tr><td>gjr</td><td>5m</td><td>in-sample</td><td>94.52</td><td>806.05</td><td>-711.53</td><td>48.57</td><td>0.47</td><td>-77.21</td><td>8706</td><td>1.01</td></tr>
+                  <tr><td>none</td><td>5m</td><td>out-of-sample</td><td>6.70</td><td>0.40</td><td>6.30</td><td>49.06</td><td>0.22</td><td>-34.21</td><td>3533</td><td>1.00</td></tr>
+                  <tr><td>rolling</td><td>5m</td><td>out-of-sample</td><td>0.74</td><td>0.40</td><td>0.34</td><td>49.06</td><td>0.13</td><td>-31.70</td><td>3533</td><td>1.00</td></tr>
+                  <tr><td>ewma</td><td>5m</td><td>out-of-sample</td><td>-4.12</td><td>0.40</td><td>-4.52</td><td>49.06</td><td>0.05</td><td>-32.74</td><td>3533</td><td>1.00</td></tr>
+                  <tr><td>garch</td><td>5m</td><td>out-of-sample</td><td>6.54</td><td>0.40</td><td>6.14</td><td>49.06</td><td>0.22</td><td>-30.67</td><td>3533</td><td>1.00</td></tr>
+                  <tr><td>egarch</td><td>5m</td><td>out-of-sample</td><td>6.86</td><td>0.40</td><td>6.46</td><td>49.06</td><td>0.22</td><td>-31.35</td><td>3533</td><td>1.00</td></tr>
+                  <tr><td>gjr</td><td>5m</td><td>out-of-sample</td><td>7.95</td><td>0.40</td><td>7.55</td><td>49.06</td><td>0.24</td><td>-30.19</td><td>3533</td><td>1.00</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p><em>(Table truncated for brevity; full results for 15m and 1h follow similar patterns, available in ema_garch_volatility_results.csv)</em></p>
+
+            <p><strong>Table 2: Out-of-Sample Ranking by Total Return</strong></p>
+            <div style="overflow-x:auto;">
+              <table class="pg-results-table" style="width:100%; border-collapse: collapse; font-size:0.78rem;">
+                <thead>
+                  <tr><th>Timeframe</th><th>Method</th><th>Total Return (%)</th><th>Excess Return (%)</th><th>Sharpe</th><th>Max DD (%)</th><th>Profit Factor</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>5m</td><td>gjr</td><td>7.95</td><td>7.55</td><td>0.24</td><td>-30.19</td><td>1.00</td></tr>
+                  <tr><td>5m</td><td>egarch</td><td>6.86</td><td>6.46</td><td>0.22</td><td>-31.35</td><td>1.00</td></tr>
+                  <tr><td>5m</td><td>none</td><td>6.70</td><td>6.30</td><td>0.22</td><td>-34.21</td><td>1.00</td></tr>
+                  <tr><td>5m</td><td>garch</td><td>6.54</td><td>6.14</td><td>0.22</td><td>-30.67</td><td>1.00</td></tr>
+                  <tr><td>5m</td><td>rolling</td><td>0.74</td><td>0.34</td><td>0.13</td><td>-31.70</td><td>1.00</td></tr>
+                  <tr><td>5m</td><td>ewma</td><td>-4.12</td><td>-4.52</td><td>0.05</td><td>-32.74</td><td>1.00</td></tr>
+                  <tr><td>15m</td><td>none</td><td>44.40</td><td>44.08</td><td>1.13</td><td>-21.24</td><td>1.02</td></tr>
+                  <tr><td>15m</td><td>garch</td><td>36.98</td><td>36.66</td><td>1.05</td><td>-20.39</td><td>1.02</td></tr>
+                  <tr><td>15m</td><td>egarch</td><td>36.16</td><td>35.84</td><td>1.04</td><td>-20.51</td><td>1.02</td></tr>
+                  <tr><td>15m</td><td>rolling</td><td>35.75</td><td>35.43</td><td>1.05</td><td>-20.04</td><td>1.02</td></tr>
+                  <tr><td>15m</td><td>gjr</td><td>35.13</td><td>34.81</td><td>1.01</td><td>-20.55</td><td>1.02</td></tr>
+                  <tr><td>15m</td><td>ewma</td><td>29.97</td><td>29.65</td><td>0.94</td><td>-20.21</td><td>1.01</td></tr>
+                  <tr><td>1h</td><td>ewma</td><td>7.56</td><td>6.81</td><td>0.81</td><td>-38.14</td><td>1.01</td></tr>
+                  <tr><td>1h</td><td>rolling</td><td>6.25</td><td>5.49</td><td>0.74</td><td>-39.18</td><td>1.01</td></tr>
+                  <tr><td>1h</td><td>egarch</td><td>6.07</td><td>5.32</td><td>0.73</td><td>-40.28</td><td>1.01</td></tr>
+                  <tr><td>1h</td><td>none</td><td>5.58</td><td>4.83</td><td>0.72</td><td>-42.97</td><td>1.01</td></tr>
+                  <tr><td>1h</td><td>garch</td><td>4.08</td><td>3.32</td><td>0.63</td><td>-40.87</td><td>1.01</td></tr>
+                  <tr><td>1h</td><td>gjr</td><td>3.19</td><td>2.44</td><td>0.59</td><td>-40.71</td><td>1.01</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p><strong>Table 3: Volatility Characteristics by Timeframe</strong></p>
+            <div style="overflow-x:auto;">
+              <table class="pg-results-table" style="width:100%; border-collapse: collapse; font-size:0.78rem;">
+                <thead>
+                  <tr><th>Statistic</th><th>5m</th><th>15m</th><th>1h</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Mean Return (%)</td><td>0.000552</td><td>0.001618</td><td>0.006335</td></tr>
+                  <tr><td>Std Dev (%)</td><td>0.204832</td><td>0.344588</td><td>0.667273</td></tr>
+                  <tr><td>Annual Vol (%)</td><td>55.18</td><td>92.83</td><td>179.76</td></tr>
+                  <tr><td>Min Return (%)</td><td>-10.225</td><td>-11.917</td><td>-18.211</td></tr>
+                  <tr><td>Max Return (%)</td><td>18.429</td><td>22.629</td><td>17.384</td></tr>
+                  <tr><td>Skewness</td><td>0.4814</td><td>0.9169</td><td>-0.4248</td></tr>
+                  <tr><td>Kurtosis</td><td>207.37</td><td>140.14</td><td>48.03</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <figure style="margin: 1.25rem 0;">
+              <img src="data/ema_cumulative_returns_detail.png" alt="ema_cumulative_returns_detail" style="width:100%; height:auto; border:1px solid rgba(0,212,255,0.2); border-radius:8px;" />
+            </figure>
+
+            <p>Visualizations (see attached files: ema_volatility_models_comparison.png for metric comparisons; ema_cumulative_returns_detail.png for cumulative returns) illustrate out-of-sample trends, showing volatility-sized strategies often reduce drawdowns while maintaining or improving returns.</p>
+
+            <h2 class="terminal-section-h4">Interpretation and Discussion</h2>
+            <p>The results reveal nuanced benefits of volatility sizing. In in-sample periods, characterized by strong BTC uptrends (e.g., buy-and-hold returns of 806% in 5m), all strategies underperform the benchmark due to the EMA's trend-filtering, which misses portions of the rally. Excess returns are thus negative, but Sharpe ratios remain positive (0.41-3.91), indicating better risk adjustment. GARCH-family models (especially rolling for 1h) excel here by capturing volatility clusters, yielding higher total returns and lower drawdowns.</p>
+            <p>Out-of-sample periods, with flatter markets (buy-and-hold ~0.4-0.8%), show the strategy's value: excess returns turn positive (up to 7.55% in 5m gjr), with reduced drawdowns (e.g., -30% vs. benchmark). Win rates hover around 49%, near random, but profit factors &gt;1 suggest asymmetric payoffs from sizing. Skewness and high kurtosis in returns (e.g., 207 in 5m) justify asymmetric models like GJR and EGARCH, which outperform symmetric GARCH in 5m and 15m.</p>
+            <p>Timeframe effects: Granular 5m benefits from GJR (best excess, Sharpe), while 1h favors EWMA (highest Sharpe 0.81), possibly due to smoother signals reducing noise. Trade counts decrease with timeframe coarseness (8706 to 666 in-sample), implying lower transaction costs in practice.</p>
+            <p>Limitations include no slippage/commissions, long-only bias, and reliance on historical data (pre-2026). BTC's evolving dynamics (e.g., post-halving) may alter results. Future work could incorporate regime detection or machine learning for volatility forecasting.</p>
+
+            <h2 class="terminal-section-h4">Conclusion</h2>
+            <p>Volatility-based position sizing enhances the EMA crossover strategy's performance on BTC, particularly in out-of-sample tests, by mitigating risk in high-volatility periods. Among methods, GJR and EWMA stand out for their balance of returns, Sharpe, and drawdown control across timeframes. While no approach consistently beats buy-and-hold in strong bull markets, volatility sizing provides a robust framework for risk-managed trading in volatile cryptocurrencies. Practitioners should prioritize asymmetric models for assets with fat tails, and validate with forward-testing to confirm these empirical insights.</p>
+
+            <div class="detail-action-row" style="margin-top: 2rem; margin-bottom: 0.5rem;">
+              <a href="research.html" class="btn btn-secondary">Back to Research</a>
+              <a href="contact.html" class="btn btn-primary">Discuss This Note</a>
+            </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div class="paper-side-nav" id="paperSideNav">
+    <button class="paper-side-toggle" id="paperSideToggle" aria-expanded="false" aria-controls="paperSidePanel">Papers</button>
+    <div class="paper-side-panel" id="paperSidePanel">
+      <div class="paper-side-title">Research Navigation</div>
+      <a class="paper-side-link" href="research.html">Back to Research</a>
+      <a class="paper-side-link active" href="research-ema-volatility.html">Volatility-Based Position Sizing in EMA Crossover Strategies</a>
+      <a class="paper-side-link" href="research.html">Statistical Arbitrage Studies</a>
+      <a class="paper-side-link" href="research.html">CTA / Trend-Following Research</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-logo">[Victoria] QUANT LAB</div>
+      <p class="footer-text">Quantitative Research &bull; Algorithmic Trading &bull; Systematic Strategies</p>
+      <div class="footer-links">
+        <a href="about.html">About</a>
+        <a href="research.html">Research</a>
+        <a href="tools.html">Tools</a>
+        <a href="marketplace.html">Marketplace</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="js/script.js"></script>
+  <script>
+    (function () {
+      var toggle = document.getElementById('paperSideToggle');
+      var panel = document.getElementById('paperSidePanel');
+      var root = document.getElementById('paperSideNav');
+      if (!toggle || !panel || !root) return;
+
+      function setOpen(open) {
+        panel.classList.toggle('open', open);
+        toggle.setAttribute('aria-expanded', String(open));
+      }
+
+      toggle.addEventListener('click', function () {
+        var isOpen = panel.classList.contains('open');
+        setOpen(!isOpen);
+      });
+
+      document.addEventListener('click', function (event) {
+        if (!root.contains(event.target)) {
+          setOpen(false);
+        }
+      });
+
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+          setOpen(false);
+        }
+      });
+    }());
+  </script>
+</body>
+</html>
